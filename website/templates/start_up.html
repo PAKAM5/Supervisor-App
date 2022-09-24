@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 <title> {% block title %}Start Up {% endblock %}</title>
-
+<link rel="stylesheet" href="style.css">
+<div class="raredog">
 {% block content %} 
 <br/>
 <br/>
+<header>
 <h1 align = "centre">Start Up Page</h1> 
 <br/>
 <div>
-    <form>
+    <form class = 'form-start'>
         <label for="cars">What is your position?:</label>
         <select name="cars" id="cars">
           <option value="volvo">Manager</option>
@@ -17,4 +19,6 @@
         </select>
         </form>
 </div>
+</header>
 {% endblock %} 
+</div>
