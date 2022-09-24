@@ -1,12 +1,16 @@
 {% extends "base.html" %}
 
 <title> {% block title %}Sign Up{% endblock %}</title>
+<link rel="stylesheet" href="style.css">
 
 {% block content %} 
-
+<div class="raredog">
+    <div class="form-box">
+   <header>     
 <form method = "POST" action="">
     <br />
     <h3 align = "center"> Sign Up</h3>
+</header>
     <div class = "form-group">
         <label for "email">Email Address</label>
         <input type ="email" 
@@ -44,7 +48,10 @@
 
     </div>
     <br />
-    <button type = "submit" class = "btn btn-primary">Sign Up</button>
-
+    <div class="button-box">
+    <button type = "submit" class = "btn-primary">Sign Up</button>
+    </div>
 </form>
+</div>
 {% endblock %} 
+</div>
