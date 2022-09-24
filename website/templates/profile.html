@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 <title> {% block title %}Home{% endblock %}</title>
+<link rel="stylesheet" href="style.css">
 
+<div class="raredog">
+    <header>
 {% block content %} <h1>Profile Page</h1>
 <h2> Welcome {{current_user.firstName}}</h2> 
 <div class="top-bar" id = "logout">
@@ -10,4 +13,6 @@
     </div>
     <a href="/logout">logout</a>
 </div>
+</header>
 {% endblock %} 
+</div>
