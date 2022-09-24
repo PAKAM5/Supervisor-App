@@ -5,22 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-    crossorigin="anonymous"
-  />
-  <link
-    rel="stylesheet"
-    href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    crossorigin="anonymous"
-  />
+    <link rel="stylesheet" href="style.css">
     <title> {% block title %}Home{% endblock %}</title>
+    
 </head>
+<div class="raredog">
 <body>
 
     <nav class = "navbar navbar-expand-lg navbar-dark bg-dark" >
+      <div id="trapezoid">
         <button 
         class = "navbar-toggler" 
         type ="button" 
@@ -34,7 +27,7 @@
             <a class = "nav-item nav-link" id = "login" href = "/login">Login</a>
             <a class = "nav-item nav-link" id = "signup" href = "/sign-up">Sign up</a>
             <a class = "nav-item nav-link" id = "logout" href = "/logout">Log out</a>
-            
+          </div>
           </div>
         </div>
      
@@ -66,4 +59,5 @@
 
 
 </body>
+</div>
 </html>
