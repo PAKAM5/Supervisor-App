@@ -245,7 +245,6 @@ header h3 {
   position: absolute;
   right: 0;
   left: 0; 
-
   z-index: 1;   
   transform: perspective(-10px);
 }
@@ -357,14 +356,14 @@ hr {
 
 *{box-sizing: border-box;margin: 0;padding: 0; outline: none; transition: all 0.3s ease; animation-delay: 0s;}
 
-/**body {
+body {
   background: #74ebd5;
   background: -webkit-linear-gradient(to bottom, #74ebd5, #acb6e5);
   background: linear-gradient(to bottom, #74ebd5, #acb6e5);
   font-size: 16px;
   line-height: 6;
   color: #888;
-}**/
+}
 
 h1, h2, h3, h4, h5 ,h6{
   font-weight: 200;
@@ -768,3 +767,4 @@ span{
   font-size: 12px;
   bottom: 68px;
   position: absolute;
+}
