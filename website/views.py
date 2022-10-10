@@ -222,19 +222,6 @@ def saved_reviews():
     # reviews = Survey.query.all()
     return render_template('saved_reviews.html', reviews = reviews)
 
-# #define page for reviews by current user
-# @views.route("/user/<string:username>")
-# def user_reviews(username):
-#     page = request.args.get('page', 1, type = int)
-#     user = User.query.filter_by(name = username).first_or_404()
-#     reviews = Survey.query.filter_by(author = user)\
-#         .order_by(Survey.date_posted.desc())\
-#         .paginate(page = page, per_page = 5)
-#     return render_template('user_reviews.html', reviews = reviews, user = user)
-
-
-
-
 
 #define managed reviews page
 @views.route("/managed-reviews")
