@@ -659,7 +659,7 @@ padding: 5px;
   position: relative;
   margin: 6% auto;
   margin-top: 20px;
-  background: #fff;
+  /**background: #fff;**/
   padding: 10px 10px;
   overflow: hidden;
   margin-bottom: 15px;
