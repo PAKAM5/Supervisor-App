@@ -44,14 +44,22 @@
             <div class="form-group-new" style="margin-top: 10px;">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
-            <small class="text-muted ml-2">
+            <!--<small class="text-muted ml-2">
                 <a href="#">Forgot Password?</a>
-            </small>
+            </small>-->
         </form>
     <div class="border-top pt-3">
         <small class="text-muted">
             Need An Account? <a class="ml-2" href="{{ url_for('auth.sign_up') }}">Sign Up Now</a>
         </small>
     </div>
+    <footer role="footer">
+        <p>Forget Password? Please Cotact With Our Friendly Staff</p>
+        <p>Contact Us</p>
+         <footer><a href="mailto:hello@BetterBoardingToolkit.com">Hello@BetterBoardingToolkit.com</a></footer>
+           <footer><a href="mailto:support@BetterBoardingToolkit.com">Support@BetterBoardingToolkit.com</a></footer>
+           <footer>Phone: +61 4 888 888 888</footer>
+            <footer>Address: Better Boarding Toolkit, 61 King Street, Adelaide, SA, 5000</footer>
+         </footer>
 {% endblock %} 
 </div>
