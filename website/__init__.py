@@ -87,8 +87,7 @@ def create_app():
     engine = create_engine('mysql://ops:ops2022@127.0.0.1/ops')
     insp = inspect(engine)
     table_names = insp.get_table_names()
-    # if True == False:## FIXME: need condition to see if 'subscription' is an element of table_names
-    if 'sub' not in table_names:
+    if 'subscription' not in table_names:
         db.create_all(app=app)
         in_school = School(school_name = "UniOlly")
         db.session.add(in_school)
