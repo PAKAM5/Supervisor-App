@@ -106,10 +106,10 @@ def create_app():
         insections2 = Sections(title = "2.Supervisor Practice", questionnaire_id =1,  id = 2)
         db.session.add(insections2)
         db.session.commit()
-        insections3 = Sections(title = "3.Team Practice", questionnaire_id = 3, id = 3)
+        insections3 = Sections(title = "3.Team Practice", questionnaire_id = 1, id = 3)
         db.session.add(insections3)
         db.session.commit()
-        insections4 = Sections(title = "4.Administrator Practice", questionnaire_id =4,  id = 4)
+        insections4 = Sections(title = "4.Administrator Practice", questionnaire_id =1,  id = 4)
         db.session.add(insections4)
         db.session.commit()
         #Insert values in table Questions Like 1.1 Aware of and complies with current legislation relevant to the role
