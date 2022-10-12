@@ -78,29 +78,20 @@ def approval():
             db.session.commit()
             flash('User has been approved', category='success')
         elif form.accept.data == 'reject':
-            row.is_approved = False
+            db.session.delete(row)
             db.session.commit()
             flash('User has been rejected', category='success')
+        elif form.accept.data == 'defer':
+            row.is_approved = False
+            db.session.commit()
+            flash('User has been deferred', category='success')
         
     
     
       # login_user(users, accept = form.accept.data)
     
     return render_template('approval.html', users=users, form=form)
-    #loop through users
-    # for user in users:
-    #     #check if user is admin
-    #     if user.is_admin == True:
-    #         #check if user is active
-    #         if user.is_active == True:
-    #             #check if user is approved
-    #             if user.is_approved == False:
-    #                 #check if user is not current user
-    #                 if user != current_user:
-    #                     #send email to user
-    #                     msg = Message('New User Approval',)
-
-    return render_template('approval.html', user=current_user, users=users)
+    
 
 #define profile page 
 @views.route("/profile", methods = ['GET','POST'])
