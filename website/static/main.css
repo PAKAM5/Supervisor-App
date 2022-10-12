@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
-.content-section {
+/**.content-section {
   background: #ffffff;
   padding: 10px 20px;
   border: 1px solid #dddddd;
@@ -650,7 +650,7 @@ textarea::-ms-input-placeholder {
   font-family: 'Roboto', sans-serif;
 }
 
-.form-group{
+/***.form-group{
 background: #fff;
 padding: 5px;
 }
