@@ -1,7 +1,6 @@
 #import modules
 import os.path
 import secrets
-from turtle import position
 from PIL import Image
 from flask import Blueprint, render_template, jsonify, redirect, url_for, request, flash, abort
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
