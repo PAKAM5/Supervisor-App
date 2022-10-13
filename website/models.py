@@ -21,9 +21,24 @@ def load_user(user_id):
 #Define school table
 class School(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    school_name = db.Column(db.String(255), nullable=False)
+    school_name = db.Column(db.String(255))
     user = db.relationship('User', backref='school', lazy=True)
 
+#Define Manager table with school as foreign key
+class Manager(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
+    manager_name = db.Column(db.String(255))
+    
+#Define Supervisor table with school and manager as foreign keys
+class Supervisor(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    supervisor_name = db.Column(db.String(255))
+    school_id = db.Column(db.Integer)
+    manager_id = db.Column(db.Integer)
+    #Foreign key constraint of school id and manager id in the manager table
+    ForeignKeyConstraint( ['manager_id', 'school_id'], ['manager.id', 'manager.school_id'] )
+    
 #define User table
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -35,8 +50,9 @@ class User(db.Model, UserMixin):
     licence = db.Column(db.String(255))
     position = db.Column(db.String(255))
     image_file = db.Column(db.String(255), nullable=False, default='default.jpg')
-    # reviews = db.relationship('Survey', backref='author', lazy=True)
+    survey = db.relationship('Survey', backref='author', lazy=True)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
+    manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
     is_approved = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
     is_superuser = db.Column(db.Boolean, default=False)
@@ -60,19 +76,7 @@ class User(db.Model, UserMixin):
         return f"User('{self.name}', '{self.email}', '{self.image_file}')"
 
    
-#Define Manager table with school as foreign key
-class Manager(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
-    
-#Define Supervisor table with school and manager as foreign keys
-class Supervisor(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    school_id = db.Column(db.Integer)
-    manager_id = db.Column(db.Integer)
-    #Foreign key constraint of school id and manager id in the manager table
-    ForeignKeyConstraint( ['manager_id', 'school_id'], ['manager.id', 'manager.school_id'] )
-    
+
 
 #Define Subsciption table
 class Subscription(db.Model):
@@ -105,13 +109,19 @@ class SubscriptionByOrder(db.Model):
 class Survey(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer)
+    manager_id = db.Column(db.Integer)
     date_posted = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     title = db.Column(db.String(100))
     document_file = db.Column(db.String(255))
+    #Create db relationship with user table as author
+
+    #Foreign constraint of user id and manager id in the user table
+    ForeignKeyConstraint( ['user_id', 'manager_id'], ['user.id', 'user.manager_id'] )
+
     
    
-class Review(db.Model):
+# class Review(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     document_file = db.Column(db.String(255))
     date_posted = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
@@ -124,7 +134,12 @@ class Questionnaire(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     date_posted = db.Column(db.DateTime(timezone=True), default=func.now())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer)
+    survey_id = db.Column(db.Integer)
+    #foreign key constraint for user id and survey id in survey table
+    ForeignKeyConstraint( ['user_id', 'survey_id'], ['survey.user_id', 'survey.id'] )
+
+
     
         
 #define survey sections

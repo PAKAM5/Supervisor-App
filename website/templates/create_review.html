@@ -18,12 +18,19 @@
                 <h3>1.Professional Practice</h3>
                 <p>1.1 Aware of and complies with current legislation relevant to the role </p>
                 <div>
-                    <!--Create for loop for responses-->
-                    {%for row in questionnaire%}
+                    <!--Create for loop for appraisal-->
+                    <!--{%for row in questionnaire%}
+                    {{questionnaire}}
                         {%for row in sections%}
+                        {{sections}}
                             {%for row in questions%}
+                           {{questions}}
                                 {%for row in dotpoints%}
+                               {{dotpoints}}>-->
                                     {%for row in review%}
+                                    {{review.title}}
+                                        {{form.response.label(class="form-control-label")}}
+                                        {{form.response(class="form-control form-control-lg")}}
                                         {{ form.choices.label(class="form-control-label") }}
                                         {% if form.choices.errors %}
                                         {{ form.choices(class="form-control form-control-lg is-invalid") }}
@@ -92,10 +99,11 @@
                                             {{ form.actions(class="form-control form-control-lg") }}
                                         {% endif %}
                                     {%endfor%}
-                    {%endfor%}
+                                    
+                    <!--{%endfor%}
                         {%endfor%}
                             {%endfor%}
-                                {%endfor%}
+                                {%endfor%}-->
                                 </div>
                   
             </div>

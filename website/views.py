@@ -106,15 +106,15 @@ def profile():
         current_user.email = form.email.data
         current_user.licence = form.licence.data
         db.session.commit()
-        current_user.position = position
         if current_user.is_admin == True:
-            position = "Admin"
+            current_user.position = "Admin"
         elif current_user.is_superuser == True:
-            position = "Admin"
+            current_user.position = "Admin"
         elif current_user.is_manager == True:
-            position = "Manager"
+            current_user.position = "Manager"
         else:
-            position = "Supervisor"
+            current_user.position = "Supervisor"
+        position = current_user.position
         # position = form.position.data
         user = User(position = position)
         db.session.commit(user)
@@ -134,45 +134,76 @@ def home():
     
     # #get the school id of the current user
     # user_s = current_user.school_id
+    user = User()
 
     #Get the matching school name from the school table
     school = School.query.filter_by(id=user.school_id).first()
    
-    return render_template("home.html", school =school)
+    return render_template("home.html", school =school, user = user)
 
 #define create new appraisal page
 @views.route("/appraisal/new", methods = ['GET','POST'])
 #@login_required
 def create_appraisal():
     form = AppraisalForm()
+    survey = Survey()
     questionnaire = Questionnaire.query.all()
+    #get title from questionnaire table if title exists
+    
+    #Create a dictionary from questionairre query
+    # questionnaire_dict =  dict((col, getattr(questionnaire, col)) for col in questionnaire.__table__.columns.keys())
+
     sections = Sections.query.all()
+    #Create a dictionary from sections query
+    # sections_dict = dict((col, getattr(sections, col)) for col in sections.__table__.columns.keys())
+
     questions = Questions.query.all()
+    #Create a dictionary from questions query
+    # questions_dict = dict((col, getattr(questions, col)) for col in questions.__table__.columns.keys())
     dotpoints = Dotpoints.query.all()
+    #Create a dictionary from dotpoints query
+    # dotpoints_dict = dict((col, getattr(dotpoints, col)) for col in dotpoints.__table__.columns.keys())
+    review = []
+    evidence = []
+    comments = []
+    action = []
+    text = ""   
+
 
     if form.validate_on_submit() and request.method == 'POST':
         # review = Response(title = form.choices.data )
-        #create a for loop Response
-        for row in form.choices.data:
-            review = Response(title = row )
-            db.session.add(review)
-            db.session.commit()
+
+    
+       #create for loop for entry in choices
+
+       for row in questionnaire:
+        for row in sections:
+            for row in questions:
+                for row in dotpoints:
+                    for row in form.choices.data.items:
+                        review = Response(title = row )
+                        db.session.add(review)
+                        db.session.commit()
         #Create for loop for every entry in Evidence
-        for row in form.evidence.data:
+        
+        for row in form.evidence.data.items:
             evidence = Evidence(title = row )
             db.session.add(evidence)
             db.session.commit()
         #Create for loop for every entry in Comments
-        for row in form.comments.data:
+       
+        for row in form.comments.data.items:
             comments = Comments(title = row )
             db.session.add(comments)
             db.session.commit()
         #Create for loop for every entry in Action
-        for row in form.actions.data:
+
+        for row in form.actions.data.items:
             action = Action(title = row )
             db.session.add(action)
             db.session.commit()
-        return render_template("create_review.html", form = form, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
+        flash("Your appraisal has been created!", category='success')
+        return redirect(url_for('views.saved_reviews'))
 
         # review = Survey( author = current_user, title = form.title.data, choices = form.choices.data, comments = form.comments.data, evidence = form.evidence.data, actions = form.actions.data,
         # choices2 = form.choices2.data, comments2 = form.comments2.data, evidence2 = form.evidence2.data, actions2 = form.actions2.data,
@@ -188,11 +219,11 @@ def create_appraisal():
         # choices12 = form.choices12.data, comments12 = form.comments12.data, evidence12 = form.evidence12.data, actions12 = form.actions12.data,
         # choices13 = form.choices13.data, comments13 = form.comments13.data, evidence13 = form.evidence13.data, actions13 = form.actions13.data,
         # choices14 = form.choices14.data, comments14 = form.comments14.data, evidence14 = form.evidence14.data, actions14 = form.actions14.data,)
-        db.session.add(review)
-        db.session.commit()
-        flash ('Your survey has been saved', "success")
-        return redirect('/saved-reviews')
-    return render_template("create_appraisal.html", title = "Create New Appraisal", form = form)
+        # db.session.add(review)
+        # db.session.commit()
+        # flash ('Your survey has been saved', "success")
+        # return redirect('/saved-reviews')
+    return render_template("create_review.html", form = form, text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
 
 
 # #define create new appraisal page
@@ -277,7 +308,7 @@ def managed_reviews():
         return render_template("managed_reviews.html", reviews = reviews)
     elif current_user.is_manager:
         #Get reviews where supervisor manager id is equal to current user id
-        reviews = Survey.query.filter_by(supervisor_manager_id = current_user.id).all()
+        reviews = Survey.query.filter_by(manager_id = current_user.manager_id).all()
         # reviews = Survey.query.all()
         return render_template("managed_reviews.html", reviews = reviews)
     else:

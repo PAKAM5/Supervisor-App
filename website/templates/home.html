@@ -4,12 +4,21 @@
 {% block content %} 
 <br>
 &nbsp;
-
+{%if not user%}
 <h1>Welcome to the Supervisor Appraisal App</h1>
 <h2>A user-friendly appraisal experience</h2>
 
 <p><a href="{{ url_for('auth.login') }}">Login</a></p>
 
+{%elif current_user.is_approved%}
+
+<h1>Welcome {{user.first_name}} to the {{school.school_name}} Supervisor Appraisal App</h1>
+<h2>A user-friendly appraisal experience</h2>
+
+{%else%}
+<h1>Welcome to the Supervisor Appraisal App</h1>
+<h2>A user-friendly appraisal experience</h2>
+{%endif%}
 
 <!--link to register page-->
     
