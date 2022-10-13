@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div>
+                <h2> Supervisor Appraisal Form</h2>
+            </div>
+            <div class = "form-group">
+                {{form.title.label(class="form-control-label")}}
+                {{form.title(class="form-control form-control-lg")}}
+            </div>
+            <div class="form-group">
+                <h3>1.Professional Practice</h3>
+                <p>1.1 Aware of and complies with current legislation relevant to the role </p>
+                <div>
+                    <!--Create for loop for responses-->
+                    {%for row in questionnaire%}
+                        {%for row in sections%}
+                            {%for row in questions%}
+                                {%for row in dotpoints%}
+                                    {%for row in review%}
+                                        {{ form.choices.label(class="form-control-label") }}
+                                        {% if form.choices.errors %}
+                                        {{ form.choices(class="form-control form-control-lg is-invalid") }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.choices.errors %}
+                                                <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    
+                                    <div>
+                                    {% else %}
+                                    {% for choices in form.choices %}
+
+                                        {{ choices.label}}
+                                        {{ choices}}
+
+                                        
+                                    {% endfor %} 
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                                
+                                </div>
+                                <div>
+                                    <!--Create for loop for comments-->
+                                    {%for row in comments%}
+                                        {{ form.comments.label(class="form-control-label") }}
+                                        {% if form.comments.errors %}
+                                            {{ form.comments(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.comments.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.comments(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    {% endfor %}}  
+                                </div>
+                                <div>
+                                    {%for row in evidence%}
+                                        {{ form.evidence.label(class="form-control-label") }}
+                                        {% if form.evidence.errors %}
+                                            {{ form.evidence(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.evidence.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.evidence(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    {% endfor %}}
+                                </div>
+                                <div>
+                                    {%for row in action%}
+                                        {{ form.actions.label(class="form-control-label") }}
+                                        {% if form.actions.errors %}
+                                            {{ form.actions(class="form-control form-control-lg is-invalid") }}
+                                            <div class="invalid-feedback">
+                                                {% for error in form.actions.errors %}
+                                                    <span>{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% else %}
+                                            {{ form.actions(class="form-control form-control-lg") }}
+                                        {% endif %}
+                                    {%endfor%}
+                    {%endfor%}
+                        {%endfor%}
+                            {%endfor%}
+                                {%endfor%}
+                                </div>
+                  
+            </div>
+            
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+</div>

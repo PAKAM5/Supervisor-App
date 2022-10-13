@@ -108,6 +108,17 @@ class SurveyForm(FlaskForm):
     date14 = DateField('Due Date', format='%Y-%m-%d')
     submit = SubmitField('Submit')
 
+#class appraisal form
+class AppraisalForm(FlaskForm):
+    choices = RadioField('Choices', choices = [('1','1'),('2','2'),('3','3'),('4','4'),('5','5')])
+    comments = TextAreaField('Comments', validators=[Length(min=0, max=200)])
+    evidence = TextAreaField('Evidence', validators=[Length(min=0, max=200)])
+    actions = TextAreaField('Actions', validators=[Length(min=0, max=200)])
+    date = DateField('Due Date', format='%Y-%m-%d')
+
+
+
+
 
 class RequestResetForm(FlaskForm):
     email = StringField('Email',
