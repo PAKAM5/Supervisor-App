@@ -147,7 +147,7 @@ def home():
 def create_appraisal():
     form = AppraisalForm()
     survey = Survey()
-    questionnaire = Questionnaire.query.all()
+    questionnaire = Questionnaire.query.first()
     #get title from questionnaire table if title exists
     
     #Create a dictionary from questionairre query
