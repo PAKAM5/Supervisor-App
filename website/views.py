@@ -139,33 +139,26 @@ def create_appraisal():
     #Create empty list for sections
     lsec = []
     #Create empty dictionary for sections
-    dsec = {}
     #Filter the sections table where the questionnaire id is equal to the questionnaire id
-    sections = Sections.query.filter_by(questionnaire_id = 1).all()
+    sections = Sections.query.filter_by(questionnaire_id = questionnaire.id).all()
     ####Create a dictionary for sections, singular dictionary keys for the section id and one for the section name and value of elements in section table
     for sec in sections:
         #Create dictionary with values of section id and sections title
-        dsec['section_id'] = sec.id
-        dsec['section_title'] = sec.title
+        dsec = {'section_id ': sec.id, 'section_title': sec.title}
         dsec['questions'] = []
+
         #dsec = {section.id:section.id, section.title: section.title}
-        #####Create empty dictionary for questions
-        dques = {}
         #Filter the questions table where the questionnaire id is equal to the questionnaire id and section id is equal to the section id
         questions = Questions.query.filter_by(questionnaire_id = 1, section_id = sec.id).all()
         #Create a dictionary with question id key and question name key
         for ques in questions:
-            dques['question_id'] = ques.id
-            dques['question_title'] = ques.title
+            dques = {'question_id': ques.id, 'question_title': ques.title}
             dques['dotpoints'] = []
-            #Create empty dictionary for dotpoints
-            ddot = {}
             #Filter the dotpoints table where the questionnaire id is equal to the questionnaire id, section is is section id  and question id is equal to the question id
             dotpoints = Dotpoints.query.filter_by(questionnaire_id = 1, section_id = sec.id, question_id = ques.id).all()
             #Create a dictionary with dotpoint id key and dotpoint name key
             for dot in dotpoints:
-                ddot['dotpoint_id'] = dot.sequence_id
-                ddot['dotpoint_name'] = dot.title
+                ddot = {'dotpoint_id': dot.sequence_id, 'dotpoint_name': dot.title}
                 #Create empty list for dotpoints
                 ldot = []
                 #Append dotpoint dictionary to list (create list for multiple dotpoints)
@@ -191,7 +184,7 @@ def create_appraisal():
        #create for loop for entry in choices
 
        
-        for row in form.choices.data.items:
+        for row in form.choices.data.items:  
             review = Response(title = row )
             db.session.add(review)
             db.session.commit()
@@ -216,7 +209,7 @@ def create_appraisal():
         flash("Your appraisal has been created!", category='success')
         return redirect(url_for('views.saved_reviews'))
 
-    return render_template("create_review.html", form = form, text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints, lsec = lsec)
+    return render_template("create_review.html", lsec=lsec, dsec = dsec, form = form, text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
 
 
 
