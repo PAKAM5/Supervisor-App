@@ -12,15 +12,21 @@
             </div>
         
             <div class = "form-group">
+                <!--for all sections-->
                 {% for l in lsec %}
                 <!--Multiple questions list of dictionaires-->
                 {{l['section_id']}}
                 {{l['section_title']}}
+
                 <h1></h1>
                  {%for lquestions in l['questions']%}
                  {{lquestions['question_id']}}
                  {{lquestions['question_title']}}
-                 <div>
+                 {%for d in lquestions['dotpoints']%}
+                    {{d['dotpoint_id']}}
+                    {{d['dotpoint_title']}}
+                    
+                    <div>
                     {{ form.choices.label(class="form-control-label") }}
                 {% if form.choices.errors %}
                     {{ form.choices(class="form-control form-control-lg is-invalid") }}
@@ -85,14 +91,6 @@
     
                     {%endif%}
                 </div>
-
-
-
-                 {%for d in lquestions['dotpoints']%}
-                    {{d['dotpoint_id']}}
-                    {{d['dotpoint_title']}}
-                    
-                    
                  
 
                 <!--Single Questions-->
@@ -100,7 +98,6 @@
                 {% endfor %}
                 {% endfor %}
                 {%endfor%}
-                
                 
                 
                 

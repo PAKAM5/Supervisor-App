@@ -170,7 +170,7 @@ def create_appraisal():
                 #Append section list to s
                 #Append section dictionary to list (list for multiple sections)
                 lsec.append(dsec)
-
+                    
     
     review = []
     evidence = []
