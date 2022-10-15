@@ -144,7 +144,7 @@ class ApprovalForm(FlaskForm):
     # reject = RadioField('Reject')
     # defer = RadioField("Defer")
 
-    accept = RadioField('Choices', choices = [('accept','accept'),('reject','reject'),('reject','defer')])
+    accept = RadioField('Choices', choices = [('accept','accept'),('reject','reject'),('defer','defer')])
 
     submit = SubmitField("Submit")
     

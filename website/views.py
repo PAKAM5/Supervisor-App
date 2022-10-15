@@ -72,17 +72,17 @@ def approval():
     #search all users where school id is equal to current user school id and is not approved or is a superuser
     users = User.query.filter_by(school_id=current_user.school_id, is_approved=False).all()
 
-    for row in users:
+    for user in users:
         if form.accept.data == 'accept':
-            row.is_approved = True
+            user.is_approved = True
             db.session.commit()
             flash('User has been approved', category='success')
         elif form.accept.data == 'reject':
-            db.session.delete(row)
+            db.session.delete(user)
             db.session.commit()
             flash('User has been rejected', category='success')
         elif form.accept.data == 'defer':
-            row.is_approved = False
+            user.is_approved = False
             db.session.commit()
             flash('User has been deferred', category='success')
         
@@ -90,7 +90,7 @@ def approval():
     
       # login_user(users, accept = form.accept.data)
     
-    return render_template('approval.html', users=users, form=form)
+    return render_template('approval.html', user=user, form=form)
     
 
 #define profile page 
@@ -325,11 +325,11 @@ def user_table():
     users = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
 
     for row in users:
-        if form.is_manager.data == True:
-            users.is_manager == True
+        if form.is_manager == True:
+            users.is_manager = True
     for row in users:
         if form.is_superuser.data == True:
-            users.is_superuser == True
+            users.is_superuser = True
     return render_template("table.html", users = users, form = form)
 
 # #define edit_user route
