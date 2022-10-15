@@ -164,7 +164,7 @@ def create_appraisal():
             dotpoints = Dotpoints.query.filter_by(questionnaire_id = 1, section_id = sec.id, question_id = ques.id).all()
             #Create a dictionary with dotpoint id key and dotpoint name key
             for dot in dotpoints:
-                ddot['dotpoint_id'] = dot.id
+                ddot['dotpoint_id'] = dot.sequence_id
                 ddot['dotpoint_name'] = dot.title
                 #Create empty list for dotpoints
                 ldot = []
