@@ -177,6 +177,7 @@ span{
 #login{
   left: 50px;
 }
+ 
 
 #register{
   left: 450px;
@@ -359,7 +360,7 @@ hr {
   background-color: #000;
 }
 
-*{box-sizing: border-box;margin: 0;padding: 0; outline: none; transition: all 0.3s ease; animation-delay: 0s;}
+*{box-sizing: border-box;margin: 0;padding: 0; outline: none; transition: all 0.3s ease; animation-delay: 0s;margin-block-end: inherit;}
 
 body {
   background: #74ebd5;
@@ -671,7 +672,6 @@ padding: 5px;
 }
 
 .login-title {
-font-size: 30px;
 margin-bottom: 15px;
 }
 
