@@ -28,16 +28,8 @@ class School(db.Model):
 class Manager(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
-    manager_name = db.Column(db.String(255))
+    supervisor_id = db.Column(db.Integer, primary_key=True)
     
-#Define Supervisor table with school and manager as foreign keys
-class Supervisor(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    supervisor_name = db.Column(db.String(255))
-    school_id = db.Column(db.Integer)
-    manager_id = db.Column(db.Integer)
-    #Foreign key constraint of school id and manager id in the manager table
-    ForeignKeyConstraint( ['manager_id', 'school_id'], ['manager.id', 'manager.school_id'] )
     
 #define User table
 class User(db.Model, UserMixin):
@@ -50,7 +42,7 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(255))
     image_file = db.Column(db.String(255), nullable=False, default='default.jpg')
     survey = db.relationship('Survey', backref='author', lazy=True)
-    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
+    school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
     manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
     is_approved = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
@@ -79,19 +71,9 @@ class User(db.Model, UserMixin):
 
 #Define Subsciption table
 class Subscription(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.String(255), nullable=False)
-    quantity = db.Column(db.Integer)
-    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
+    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False, primary_key = True)
+    expiry_date =  db.Column(db.String(255))
     
-
-#define subscription by order table
-class SubscriptionByOrder(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    subscription_id = db.Column(db.Integer, db.ForeignKey('subscription.id'), nullable=False)
-    subscription_duration = db.Column(db.Integer, nullable=False)
-
-
 # #define reviews table
 # class Reviews(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
