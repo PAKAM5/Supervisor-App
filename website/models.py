@@ -6,6 +6,7 @@ from datetime import datetime
 from sqlalchemy import PrimaryKeyConstraint, ForeignKeyConstraint, Column, String, Integer, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+import datetime
 # from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 #import modules db
@@ -70,7 +71,7 @@ class User(db.Model, UserMixin):
 #Define Subsciption table
 class Subscription(db.Model):
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False, primary_key = True)
-    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     
     
 # #define reviews table
