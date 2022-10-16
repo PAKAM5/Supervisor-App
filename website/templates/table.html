@@ -24,7 +24,7 @@
             <td>{{form.is_manager}}</td>
             <td> {{form.is_superuser}}</td>
             <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>
-            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
+            <td><a href="">Remove</a></td>
             <td><a href="">Assign a manager</a></td>
         </tr>
         {% endfor %}
