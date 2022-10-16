@@ -9,11 +9,11 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Is Manager</th>
-            <th>Is Admin</th>
+            <th>Manager</th>
+            <th>Admin</th>
         </tr>
         {% for user in users %}
-        <tr>
+        </tr>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{form.is_manager}}</td>
