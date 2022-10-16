@@ -9,11 +9,16 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
+<<<<<<< HEAD
             <th>Provide manager access</th>
             <th>Provide Admin access</th>
+=======
+            <th>Manager</th>
+            <th>Admin</th>
+>>>>>>> 1bb27a597303ebabf6b0cbc83fc6c8aa0a5de354
         </tr>
         {% for user in users %}
-        <tr>
+        </tr>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{form.is_manager}}</td>
