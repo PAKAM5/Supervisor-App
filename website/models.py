@@ -66,13 +66,12 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.name}', '{self.email}', '{self.image_file}')"
 
-   
-
 
 #Define Subsciption table
 class Subscription(db.Model):
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False, primary_key = True)
-    expiry_date =  db.Column(db.String(255))
+    expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    
     
 # #define reviews table
 # class Reviews(db.Model):

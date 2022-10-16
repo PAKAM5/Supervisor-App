@@ -15,20 +15,12 @@
                     <th>Email</th>
                     <th>Action</th>
                 </tr>
-                {%for user in user %}
+                {%for user in users %}
                 <tr>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ form.accept }}</td>
                 </tr>
-                
-                <!--&nbsp; Accept, Reject, or Defer-->
-                <!--<input type="radio" name="user_{{user.username}}" value="1" />-->
-                <!--&nbsp; Reject-->
-                <!--<input type="radio" name="user_{{user.username}}" value="-1" />-->
-                
-                <!--&nbsp; Defer-->
-                <!--<input type="radio" name="user_{{user.username}}" value="0" checked="checked" />-->
                 
             </fieldset>      
         {%endfor%}

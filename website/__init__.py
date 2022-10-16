@@ -15,7 +15,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
 from flask_migrate import Migrate
-
+import datetime
 
 
 
@@ -206,7 +206,16 @@ def create_app():
         print('Database populated')
 
     
-    
+        #Define expiry date function
+        def expiry_date():
+            users = User.filter_by(school_id = current_user.school_id)
+            now = datetime.datetime.now()
+            if now > expiry_date:
+                users.is_approved = False
+            elif now < expiry_date:
+                users.is_approved = True
+            
+
 
 
           #if not engine.has_table(engine, 'subscription'):  #to test if a database exists

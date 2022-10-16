@@ -73,6 +73,7 @@ def approval():
     users = User.query.filter_by(school_id=current_user.school_id, is_approved=False).all()
 
     for user in users:
+        # for user in users:
         if form.accept.data == 'accept':
             user.is_approved = True
             db.session.commit()
@@ -85,12 +86,12 @@ def approval():
             user.is_approved = False
             db.session.commit()
             flash('User has been deferred', category='success')
-        
+        duser = {'user': user}
     
     
       # login_user(users, accept = form.accept.data)
     
-    return render_template('approval.html', user=user, form=form)
+    return render_template('approval.html',user = user, users=users, duser =duser, form=form)
     
 
 #define profile page 
@@ -323,14 +324,35 @@ def user_table():
     #get users from user table that are approved and have the same school id as current user but are not superuser
     #  users = User.query.filter_by(is_approved = True, school_id = current_user.school_id, is_superuser = False).all()
     users = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
+    #filter users by users that don't have the same id as current user
+    
+    for row in users:
+        #if the user id is equal to the current user id
+        if form.is_manager.data == True:
+            row.is_manager = True
+            db.session.commit()
+        elif form.is_superuser.data == True:
+            row.is_superuser = True
+            db.session.commit()
+        elif form.is_manager.data == False:
+            row.is_manager = False
+            db.session.commit()
+        elif form.is_superuser.data == False:
+            row.is_superuser = False
+            db.session.commit()
+    return render_template("table.html", row=row, users = users, form = form)
 
-    for row in users:
-        if form.is_manager == True:
-            users.is_manager = True
-    for row in users:
-        if form.is_superuser.data == True:
-            users.is_superuser = True
-    return render_template("table.html", users = users, form = form)
+#Define delete user route
+@app.route("/user/<int:id>/delete", methods=['GET','POST'])
+def delete_user(id):
+    if request.method == 'POST':
+        user = User.query.get_or_404(id)
+        db.session.delete(user)
+        db.session.commit()
+        flash('Your post has been deleted!', 'success')
+        return render_template("table.html", id = id, user = user)
+
+
 
 # #define edit_user route
 @views.route("/edit_user/<int:id>", methods = ['GET','POST'])
@@ -342,6 +364,10 @@ def edit_user(id):
         current_user.name = form.username.data
         current_user.email = form.email.data
         db.session.commit()
+        if form.delete.data == True:
+            db.session.delete(user)
+            db.session.commit()
+            flash('User has been rejected', category='success')
         flash('Your changes have been saved')
         return redirect(url_for('views.user_table'))
     return render_template("edit_user.html", form = form, user = user)

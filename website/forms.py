@@ -140,9 +140,6 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset Password')
 
 class ApprovalForm(FlaskForm):
-    # accept = RadioField('Accept')
-    # reject = RadioField('Reject')
-    # defer = RadioField("Defer")
 
     accept = RadioField('Choices', choices = [('accept','accept'),('reject','reject'),('defer','defer')])
 
@@ -303,6 +300,7 @@ class EditUserForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     is_manager = BooleanField('Manager')
     is_superuser = BooleanField('Superuser')
+    delete = BooleanField('Delete')
     submit = SubmitField('Update')
 
 ##Select * from sections where questionionnaire = 1, orderedby section_number (Ascending)

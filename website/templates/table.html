@@ -2,15 +2,15 @@
 {%block title%}User Table{%endblock%}
 {%block content%}
 <!--{%if users%}-->
-<form method = "POST" action = "">
+<form method = "POST" action = "{{url_for('views.user_table')}}">
 <body> 
     <h2> Users List</h2>
     <table style ="width:100%">
         <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Is Manager</th>
-            <th>Is Admin</th>
+            <th>Provide manager access</th>
+            <th>Provide Admin access</th>
         </tr>
         {% for user in users %}
         <tr>
@@ -19,10 +19,12 @@
             <td>{{form.is_manager}}</td>
             <td> {{form.is_superuser}}</td>
             <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>
-            <<td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
+            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
+            <td><a href="">Assign a manager</a></td>
         </tr>
         {% endfor %}
     </table>
+   
 </body>
 </div>
 {{form.submit}}
