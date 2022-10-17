@@ -43,7 +43,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(255))
     phone = db.Column(db.String(255))
     image_file = db.Column(db.String(255), nullable=False, default='default.jpg')
-    survey = db.relationship('Survey', backref='author', lazy=True)
+    #survey = db.relationship('Survey', backref='author', lazy=True)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
     manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
     is_approved = db.Column(db.Boolean, default=False)

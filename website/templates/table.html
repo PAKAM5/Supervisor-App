@@ -18,6 +18,7 @@
 >>>>>>> 1bb27a597303ebabf6b0cbc83fc6c8aa0a5de354
         </tr>
         {% for user in users %}
+        {%if user.is_manager = True %}
         </tr>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
@@ -26,7 +27,21 @@
             <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>
             <td><a href="">Remove</a></td>
             <td><a href="">Assign a manager</a></td>
+            <td><a href="">{{managerform.manager_list}}</a></td>
         </tr>
+        {%elif user.is_manager = False%}
+        </tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{form.is_manager}}</td>
+            <td> {{form.is_superuser}}</td>
+            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>
+            <td><a href="">Remove</a></td>
+        </tr>
+        {%endif%}
+        {% endfor %}
+        {%endif%}
+        
         {% endfor %}
     </table>
    
