@@ -6,7 +6,8 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Selec
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
-from wtforms.fields import DateField, EmailField, TelField
+from wtforms.fields import DateField, EmailField, TelField, SelectMultipleField
+from wtforms_sqlalchemy.fields import QuerySelectField
 from .models import User
 
 
@@ -119,9 +120,6 @@ class AppraisalForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
-
-
-
 class RequestResetForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
@@ -145,7 +143,12 @@ class ApprovalForm(FlaskForm):
 
     submit = SubmitField("Submit")
     
-
+class QueryManager(FlaskForm):
+    manager_list = QuerySelectField(
+        'Assign a Manager',
+        query_factory=lambda: User.query.filter_by(is_manager = True).order_by(User.name),
+        allow_blank=False
+    )
     
 
 

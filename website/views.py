@@ -28,7 +28,7 @@ from . import app
 views = Blueprint('views', __name__)
 
 from .models import db, User, Survey, Files, School, Manager, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
-from .forms import ApprovalForm, SurveyForm, EditProfileForm, EditUserForm, AppraisalForm
+from .forms import ApprovalForm, SurveyForm, EditProfileForm, EditUserForm, AppraisalForm, QueryManager
 
 #define schedule job
 # @app.route("/success", methods=['POST'])
@@ -117,9 +117,7 @@ def profile():
 
 #define home page 
 @views.route("/")
-def home():
-    
-    
+def home():   
     # #get the school id of the current user
     # user_s = current_user.school_id
     user = User()
@@ -320,13 +318,15 @@ def direct_home():
 #define user table route
 @views.route("/user-table", methods = ['GET','POST'])
 def user_table():
+    #Get forms
     form = EditUserForm()
+    managerform =  QueryManager()
     #get users from user table that are approved and have the same school id as current user but are not superuser
-    #  users = User.query.filter_by(is_approved = True, school_id = current_user.school_id, is_superuser = False).all()
     users = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
     #filter users by users that don't have the same id as current user
     
     for row in users:
+        #Assign roles
         #if the user id is equal to the current user id
         if form.is_manager.data == True:
             row.is_manager = True
@@ -342,13 +342,18 @@ def user_table():
             row.is_manager = False
             db.session.commit()
             #remove row name from manager name in manage table
-            remove_manager = Manager.query.filter_by(name = row.name).first()
-            db.session.delete(remove_manager)
-            db.session.commit()
+            if row.name in Manager(): 
+                remove_manager = Manager.query.filter_by(name = row.name).first()
+                db.session.delete(remove_manager)
+                db.session.commit()
         elif form.is_superuser.data == False:
             row.is_superuser = False
             db.session.commit()
-    return render_template("table.html", row=row, users = users, form = form)
+        #Assign Managers
+        elif managerform.manager_list.data == row.name:
+            row.manager_id = row.id
+            db.session.commit()
+    return render_template("table.html", row=row, users = users, form = form, managerform = managerform)
 
 #Define delete user route
 @app.route("/user/<int:id>/delete", methods=['GET','POST'])
@@ -379,6 +384,30 @@ def edit_user(id):
         flash('Your changes have been saved')
         return redirect(url_for('views.user_table'))
     return render_template("edit_user.html", form = form, user = user)
+
+ #Define select Query Manager route
+@views.route("/select_manager", methods = ['GET','POST'])
+def select_manager():
+    form = QueryManager()
+    #get users from user table that are approved and have the same school id as current user
+    users = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
+    #filter users by users that don't have the same id as current user
+    users = [user for user in users if user.id != current_user.id]
+    #get managers from manager table
+    managers = Manager.query.all()
+    #get reviews from survey table
+    reviews = Survey.query.all()
+    #if form is submitted
+    if request.method == "POST" and form.validate():
+        #get manager id from form
+        manager_id = form.manager.data
+        #get manager name from manager table where manager id is equal to manager id from form
+        manager_name = Manager.query.filter_by(id = manager_id).first()
+        #get user id from form
+        user_id = form.User.data
+        #get user name from user table where user id is equal to user id from form
+        user_name = User.query.filter_by(id = user_id).first()
+        
       
 
 # #define appraisal matrix page 
