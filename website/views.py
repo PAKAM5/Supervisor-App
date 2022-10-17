@@ -27,7 +27,7 @@ from . import app
 #set up Blueprint
 views = Blueprint('views', __name__)
 
-from .models import db, User, Survey, Files, School, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
+from .models import db, User, Survey, Files, School, Manager, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
 from .forms import ApprovalForm, SurveyForm, EditProfileForm, EditUserForm, AppraisalForm
 
 #define schedule job
@@ -331,11 +331,19 @@ def user_table():
         if form.is_manager.data == True:
             row.is_manager = True
             db.session.commit()
+            #add row name to manager name in manage table
+            add_manager = Manager(name = row.name)
+            db.session.add(add_manager)
+            db.session.commit()
         elif form.is_superuser.data == True:
             row.is_superuser = True
             db.session.commit()
         elif form.is_manager.data == False:
             row.is_manager = False
+            db.session.commit()
+            #remove row name from manager name in manage table
+            remove_manager = Manager.query.filter_by(name = row.name).first()
+            db.session.delete(remove_manager)
             db.session.commit()
         elif form.is_superuser.data == False:
             row.is_superuser = False

@@ -6,7 +6,7 @@ from datetime import datetime
 from sqlalchemy import PrimaryKeyConstraint, ForeignKeyConstraint, Column, String, Integer, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-import datetime
+from datetime import datetime
 # from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 #import modules db
@@ -28,6 +28,7 @@ class School(db.Model):
 #Define Manager table with school as foreign key
 class Manager(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
     supervisor_id = db.Column(db.Integer, primary_key=True)
     
