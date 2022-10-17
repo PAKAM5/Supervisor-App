@@ -447,6 +447,9 @@ fieldset{
 }
 
 /* STEPS */
+ul li::marker{
+  content: ' ';
+}
 
 .steps{
   list-style-type: none;
