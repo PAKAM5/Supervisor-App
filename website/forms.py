@@ -260,7 +260,7 @@ class RegistrationForm(FlaskForm):
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
     email = StringField('Email', validators=[DataRequired(), Email()])
-    school_id = StringField('Input School Id')
+    school_id = StringField('Input School ID')
     password = PasswordField('Password')
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')

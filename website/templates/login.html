@@ -8,8 +8,8 @@
     {{ form.hidden_tag() }}
     {{form.csrf_token}}
             <fieldset class="form-group-new">
-                <!--<legend class="border-bottom mb-4">Log In</legend>-->
-                <div class="border-bottom login-title">Log In</div>
+                <legend class="border-bottom mb-4" style = "text-align: center;">Log In</legend>
+                <!--<div class="border-bottom login-title">Log In</div>-->
                 <div class="gap">
                     {{ form.email.label(class="form-control-label") }}
                     {% if form.email.errors %}
