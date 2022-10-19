@@ -4,8 +4,6 @@
 
 {%block content%}
 
-
-    </fieldset>
      {%if users %}
      <form method = "post" action = "/approval"><h1>Pending User</h1>
             <fieldset>
@@ -24,26 +22,16 @@
                      <td>{{ accept }}</td>
                     {%endfor%}
                 </tr>
-                
-            </fieldset>      
-        {%endfor%}
-         <!-- submit buttn goes here -->
-         <div>
-             {{form.submit}}
-         </div>
-         <div>
-             <p><a href="{{url_for('views.home')}}">Return to home page</a></p>
-         </div>
-        
+                {%endfor%}
+            </table>
+            </fieldset>
+            <!-- submit buttn goes here -->
+            <div>
+                 {{form.submit}}
+            </div>
+            <div>
+                <p><a href="{{url_for('views.home')}}">Return to home page</a></p>
+            </div>
+     </form>
      {%endif%}
-
-
-</form>
-
-   
-
-
-
-
-
 {%endblock%}
