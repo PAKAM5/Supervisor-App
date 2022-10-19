@@ -17,14 +17,14 @@
                 <!--Multiple questions list of dictionaires-->
                 <h3>{{l['section_id']}}. &nbsp; {{l['section_title']}}</h3>
 
-                <h1></h1>
+                
                  {%for lquestions in l['questions']%}
-                 <!--{{lquestions['question_id']}}
-                 {{lquestions['question_title']}}-->
+                 
+                 <div class = 'questions'>
 
                  {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                  {{lquestions['question_title']}} 
-                 <div>
+                 <div class = 'rating'>
                     <a>1<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"   type = 'radio' value = '1'/></a>
                     <a>2<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '2'/></a>
                     <a>3<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '3'/></a>
@@ -33,20 +33,30 @@
                  </div> 
 
                  {%for d in lquestions['dotpoints']%}
-                    {{d['dotpoint_id']}}
                     {{d['dotpoint_name']}}
                     
                    
                 <div>
-                <div>
+                <div class = 'comments'>
                     <textarea placeholder = Comments id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                 </div>
-                <div>
+                {%if current_user.is_superuser%}
+                <div class = 'evidence'>
                     <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                 </div>
-                <div>
+                <div class = 'actions'>
                     <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                 </div>
+                </div>
+                {%elif current_user.is_manager%}
+                <div class = 'evidence'>
+                    <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                </div>
+                <div class = 'actions'>
+                    <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                </div>
+                </div>
+                {%endif%}
 
 
                     <!--{{ form.comments.label(class="form-control-label") }}

@@ -17,12 +17,13 @@
                 <tr>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
-                    {%for accept in form.accept%}
-                    <td>{{accept.label}}</td>
-                     <td>{{ accept }}</td>
+                    <td><input type = 'radio' name ="{{user.first_name}}" value = "accept">Accept
+                        <input type = 'radio' name ="{{user.first_name}}" value = "reject">Reject
+                        <input type = 'radio' name ="{{user.first_name}}" value = "defer" selected="selected">Defer
+                    </td>
+
                     {%endfor%}
                 </tr>
-                {%endfor%}
             </table>
             
             </fieldset>

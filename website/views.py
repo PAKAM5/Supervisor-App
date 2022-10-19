@@ -70,20 +70,34 @@ def approval():
     users = User.query.filter_by(school_id=current_user.school_id, is_approved=False).all()
 
     for user in users:
-        # for user in users:
-        if form.accept.data == 'accept':
-            user.is_approved = True
-            db.session.commit()
-            flash('User has been approved', category='success')
-        elif form.accept.data == 'reject':
-            db.session.delete(user)
-            db.session.commit()
-            flash('User has been rejected', category='success')
-        elif form.accept.data == 'defer':
-            user.is_approved = False
-            db.session.commit()
-            flash('User has been deferred', category='success')
-        duser = {'user': user}
+        for key, value in request.form.items():
+             for value in request.form.get["{{user.first_name}}"]:
+                if value == "accept":
+                    user.is_approved = True
+                    db.session.commit()
+                    flash('User has been approved', category = 'success' )
+                elif value == 'reject':
+                    db.session.delete(user)
+                    db.session.commit()
+                    flash('User has been rejected', category='success')
+                elif value == 'defer':
+                    user.is_approved = False
+                    db.session.commit()
+                    flash('User has been deferred', category='success')   
+
+        # if form.accept.data == 'accept':
+        #     user.is_approved = True
+        #     db.session.commit()
+        #     flash('User has been approved', category='success')
+        # elif form.accept.data == 'reject':
+        #     db.session.delete(user)
+        #     db.session.commit()
+        #     flash('User has been rejected', category='success')
+        # elif form.accept.data == 'defer':
+        #     user.is_approved = False
+        #     db.session.commit()
+        #     flash('User has been deferred', category='success')
+        # duser = {'user': user}
     
     
       # login_user(users, accept = form.accept.data)
@@ -313,9 +327,12 @@ def direct_home():
 def user_table():
     #Get forms
     form = EditUserForm()
+    row = []
     managerform =  QueryManager()
     #get users from user table that are approved and have the same school id as current user but are not superuser
-    users = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
+    # userspre = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
+    #Get users from user table that are not current user
+    users = User.query.filter(User.id != current_user.id).filter_by(school_id = current_user.school_id, is_approved = True).all()
     #Get managers whose school id is the same as current user from the manager table
     available_managers = Manager.query.filter_by(school_id = current_user.school_id).all()
     #Now forming the list of tuples for SelectField
@@ -323,28 +340,44 @@ def user_table():
     managerform.manager_id.choices = manager_list
     for row in users:
         #Assign roles
-        #if the user id is equal to the current user id
-        if form.is_manager.data == True:
-            row.is_manager = True
-            db.session.commit()
-            #add row name to manager name in manage table
-            add_manager = Manager(name = row.name, school_id = row.school_id, id = row.id)
-            db.session.add(add_manager)
-            db.session.commit()
-        elif form.is_superuser.data == True:
-            row.is_superuser = True
-            db.session.commit()
-        elif form.is_manager.data == False:
-            row.is_manager = False
-            db.session.commit()
-            #remove row name from manager name in manage table
-            if row.name == Manager.name: 
-                remove_manager = Manager.query.filter_by(name = row.name).first()
-                db.session.delete(remove_manager)
+        #get value of name {{user}} from form and assign to variable
+        name = request.form.get("{{user}}")
+        for value in name:
+            if value == 'manager':
+                row.is_manager = True
                 db.session.commit()
-        elif form.is_superuser.data == False:
-            row.is_superuser = False
-            db.session.commit()
+                add_manager = Manager(name = row.name, school_id = row.school_id, id = row.id)
+                db.session.add(add_manager)
+                db.session.commit()
+            elif value == 'superuser':
+                row.is_superuser = True
+                db.session.commit()
+      
+
+
+
+        #if the user id is equal to the current user id
+        # if form.is_manager.data == True:
+        #     row.is_manager = True
+        #     db.session.commit()
+        #     #add row name to manager name in manage table
+        #     add_manager = Manager(name = row.name, school_id = row.school_id, id = row.id)
+        #     db.session.add(add_manager)
+        #     db.session.commit()
+        # if form.is_superuser.data == True:
+        #     row.is_superuser = True
+        #     db.session.commit()
+        # elif form.is_manager.data == False:
+        #     row.is_manager = False
+        #     db.session.commit()
+        #     #remove row name from manager name in manage table
+        #     if row.name == Manager.name: 
+        #         remove_manager = Manager.query.filter_by(name = row.name).first()
+        #         db.session.delete(remove_manager)
+        #         db.session.commit()
+        # elif form.is_superuser.data == False:
+        #     row.is_superuser = False
+        #     db.session.commit()
         #Assign Managers
     # for row in users:
     #     for i in managerform.manager_id.choices:

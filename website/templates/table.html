@@ -14,8 +14,8 @@
             <th>Provide manager access</th>
             <th>Provide Admin access</th>
 =======
-            <th></th>
-            <th></th>
+            <th>Remove</th>
+            <th>Edit</th>
             <th>Assign a Manager</th>
 >>>>>>> 1bb27a597303ebabf6b0cbc83fc6c8aa0a5de354
         </tr>
@@ -24,8 +24,8 @@
         </tr>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td>{{form.is_manager}}</td>
-            <td> {{form.is_superuser}}</td>
+            <td><input type="checkbox" id="{{user}}" name="{{user}}" value="manager"><br></td>
+            <td><input type="checkbox" id="{{user}}" name="{{user}}" value="superuser"><br></td>
             <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
             <td><a href="{{url_for('views.delete_user', id = user.id)}}">Edit</a></td>
             <td><a >{{managerform.manager_id}}</a></td>
