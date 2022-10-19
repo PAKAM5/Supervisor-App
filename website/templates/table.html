@@ -1,7 +1,8 @@
 {%extends 'base.html'%}
 {%block title%}User Table{%endblock%}
 {%block content%}
-<!--{%if users%}-->
+
+{%if users%}
 <form method = "POST" action = "{{url_for('views.user_table')}}">
 <body> 
     <h2> Users List</h2>
@@ -25,8 +26,8 @@
             <td>{{ user.email }}</td>
             <td>{{form.is_manager}}</td>
             <td> {{form.is_superuser}}</td>
-            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>
-            <td><a href="{{url_for('views.delete_user', id = user.id)}}">Remove</a></td>
+            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
+            <td><a href="{{url_for('views.delete_user', id = user.id)}}">Edit</a></td>
             <td><a >{{managerform.manager_id}}</a></td>
         </tr>
         {%elif user.is_manager == True%}
@@ -35,8 +36,8 @@
             <td>{{ user.email }}</td>
             <td>{{form.is_manager}}</td>
             <td> {{form.is_superuser}}</td>
-            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>
-            <td><a href="{{url_for('views.delete_user', id = user.id)}}">Remove</a></td>
+            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
+            <td><a href="{{url_for('views.delete_user', id = user.id)}}">Edit</a></td>
         </tr>
         {%endif%}
      
@@ -48,9 +49,12 @@
 </body>
 </div>
 {{form.submit}}
-<!--{%endif%}-->
+
+
 </form>
+{%else%}
+<h1> There are no users</h1>
 
 
-
+{%endif%}
 {%endblock%}

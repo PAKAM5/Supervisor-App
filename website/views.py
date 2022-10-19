@@ -140,7 +140,7 @@ def create_appraisal():
     ####Create a dictionary for sections, singular dictionary keys for the section id and one for the section name and value of elements in section table
     for sec in sections:
         #Create dictionary with values of section id and sections title
-        dsec = {'section_id ': sec.id, 'section_title': sec.title}
+        dsec = {'section_id': sec.id, 'section_title': sec.title}
         dsec['questions'] = []
 
         #dsec = {section.id:section.id, section.title: section.title}
@@ -157,19 +157,16 @@ def create_appraisal():
                 ddot = {'dotpoint_id': dot.sequence_id, 'dotpoint_name': dot.title}
                 #Create empty list for dotpoints
                 dques['dotpoints'].append(ddot)
-                #Append question list to section dictionary
-                dsec['questions'].append(dques)
-                #Append section list to s
-                #Append section dictionary to list (list for multiple sections)
-                lsec.append(dsec)
+            #Append question list to section dictionary
+            dsec['questions'].append(dques)
+        #Append section dictionary to list (list for multiple sections)
+        lsec.append(dsec)
 
                 
-                    
-    
-    review = []
-    evidence = []
-    comments = []
-    action = []
+    review = {}
+    evidence = {}
+    comments = {}
+    action = {}
     text = ""
 
 

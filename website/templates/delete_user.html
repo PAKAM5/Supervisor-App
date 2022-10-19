@@ -1,22 +1,21 @@
 {%extends 'base.html'%}
 
-{%block title%}Delete User{%endblock%}
+{%block title%}Delete User{% endblock %}
 {%block content%}
 <form action = "{{url_for('views.delete_user', id=user.id)}}" method = "post">
     <fieldset>
         <legend>Delete User</legend>
-        <p>Are you sure you want to delete {{user.name}}?</p>
-            {{form.delete.label}}
-             {{form.delete}}
+        <p>Are you sure you want to delete {{user.first_name}} {{user.last_name}}?</p>
         <div>
-            <button type = "submit">Yes</button>
-            <a href="{{url_for('views.user_table')}}">No</a>
+            <p>{{form.delete.label}}{{form.delete}} </p>
+             
+        </div>     
+        <div>
+            <p><a type = "submit">{{form.submit}}</a></p>
+            <p><a href="{{url_for('views.user_table')}}">No</a></p>
         <p><a href="{{url_for('views.home')}}">Return to home page</a></p>
-        <div>
-            {{form.submit}}
         </div>
     </fieldset>
-
 {%endblock%}
 
 
