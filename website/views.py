@@ -71,7 +71,7 @@ def approval():
 
     for user in users:
         for key, value in request.form.items():
-             for value in request.form.get["{{user.first_name}}"]:
+             for value in request.form.get("user.first_name"):
                 if value == "accept":
                     user.is_approved = True
                     db.session.commit()
@@ -387,15 +387,6 @@ def user_table():
         #     if i.id in row:   
     return render_template("table.html", row=row, users = users, form = form, managerform = managerform)
 
-#Define delete user route
-# @views.route("/user/<int:id>/delete", methods=['GET','POST'])
-# def delete_user(id):
-#     if request.method == 'POST':
-#         person = User.query.get_or_404(id)
-#         db.session.delete(person)
-#         db.session.commit()
-#         flash('Your post has been deleted!', 'success')
-#         return render_template("table.html", id = id, person = person)
 
 #Define delete user route
 @views.route("/user/<int:id>/delete", methods=['GET','POST'])
