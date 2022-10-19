@@ -71,7 +71,7 @@ def approval():
 
     for user in users:
         for key, value in request.form.items():
-             for value in request.form.get("user.first_name"):
+             for value in request.form.get("{{user.first_name}}"):
                 if value == "accept":
                     user.is_approved = True
                     db.session.commit()
