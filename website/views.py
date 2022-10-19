@@ -69,21 +69,19 @@ def approval():
     #search all users where school id is equal to current user school id and is not approved or is a superuser
     users = User.query.filter_by(school_id=current_user.school_id, is_approved=False).all()
 
-    for user in users:
-        for key, value in request.form.items():
-             for value in request.form.get("{{user.first_name}}"):
+    
+    for key, value in request.form.items():
+        for u in users:
+            if u.first_name == key:
                 if value == "accept":
-                    user.is_approved = True
+                    u.is_approved = True
                     db.session.commit()
                     flash('User has been approved', category = 'success' )
                 elif value == 'reject':
-                    db.session.delete(user)
+                    db.session.delete(u)
                     db.session.commit()
                     flash('User has been rejected', category='success')
-                elif value == 'defer':
-                    user.is_approved = False
-                    db.session.commit()
-                    flash('User has been deferred', category='success')   
+                break  
 
         # if form.accept.data == 'accept':
         #     user.is_approved = True
