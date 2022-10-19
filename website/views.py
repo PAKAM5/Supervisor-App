@@ -344,13 +344,13 @@ def user_table():
         for user in users:
             if key == user.email:
                 if value == 'superuser':
-                    row.is_superuser = True
+                    user.is_superuser = True
                     db.session.commit()
 
                 elif value == 'manager':
-                    row.is_manager = True
+                    user.is_manager = True
                     db.session.commit()
-                    add_manager = Manager(name = row.name, school_id = row.school_id, id = row.id)
+                    add_manager = Manager(name = user.name, school_id = user.school_id, id = user.id)
                     db.session.add(add_manager)
                     db.session.commit()
                 
