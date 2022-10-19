@@ -12,10 +12,7 @@ from flask_mail import Mail, Message
 from flask import redirect
 import jinja2
 import datetime
-from datetime import datetime
-from datetime import time
-from datetime import date
-from datetime import timedelta
+from datetime import datetime, time, date, timedelta, timezone
 #from send_email import send_email
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.date import DateTrigger
@@ -91,7 +88,7 @@ def approval():
     
       # login_user(users, accept = form.accept.data)
     
-    return render_template('approval.html',user = user, users=users, duser =duser, form=form)
+    return render_template('approval.html', users=users, form=form)
     
 
 #define profile page 
@@ -159,16 +156,14 @@ def create_appraisal():
             for dot in dotpoints:
                 ddot = {'dotpoint_id': dot.sequence_id, 'dotpoint_name': dot.title}
                 #Create empty list for dotpoints
-                ldot = []
-                #Append dotpoint dictionary to list (create list for multiple dotpoints)
-                ldot.append(ddot)
-                #Add dotpoint list to question dictionary
-                dques['dotpoints'] = ldot
+                dques['dotpoints'].append(ddot)
                 #Append question list to section dictionary
                 dsec['questions'].append(dques)
                 #Append section list to s
                 #Append section dictionary to list (list for multiple sections)
                 lsec.append(dsec)
+
+                
                     
     
     review = []
@@ -183,25 +178,25 @@ def create_appraisal():
        #create for loop for entry in choices
 
        
-        for row in form.choices.data.items:  
+        for row in form.choices.data:  
             review = Response(title = row )
             db.session.add(review)
             db.session.commit()
         #Create for loop for every entry in Evidence
 
-        for row in form.evidence.data.items:
+        for row in form.evidence.data:
             evidence = Evidence(title = row )
             db.session.add(evidence)
             db.session.commit()
         #Create for loop for every entry in Comments
 
-        for row in form.comments.data.items:
+        for row in form.comments.data:
             comments = Comments(title = row )
             db.session.add(comments)
             db.session.commit()
         #Create for loop for every entry in Action
 
-        for row in form.actions.data.items:
+        for row in form.actions.data:
             action = Action(title = row )
             db.session.add(action)
             db.session.commit()
@@ -323,8 +318,11 @@ def user_table():
     managerform =  QueryManager()
     #get users from user table that are approved and have the same school id as current user but are not superuser
     users = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
-    #filter users by users that don't have the same id as current user
-    
+    #Get managers whose school id is the same as current user from the manager table
+    available_managers = Manager.query.filter_by(school_id = current_user.school_id).all()
+    #Now forming the list of tuples for SelectField
+    manager_list=[(i.id, i.name) for i in available_managers]
+    managerform.manager_id.choices = manager_list
     for row in users:
         #Assign roles
         #if the user id is equal to the current user id
@@ -332,7 +330,7 @@ def user_table():
             row.is_manager = True
             db.session.commit()
             #add row name to manager name in manage table
-            add_manager = Manager(name = row.name)
+            add_manager = Manager(name = row.name, school_id = row.school_id, id = row.id)
             db.session.add(add_manager)
             db.session.commit()
         elif form.is_superuser.data == True:
@@ -342,7 +340,7 @@ def user_table():
             row.is_manager = False
             db.session.commit()
             #remove row name from manager name in manage table
-            if row.name in Manager(): 
+            if row.name == Manager.name: 
                 remove_manager = Manager.query.filter_by(name = row.name).first()
                 db.session.delete(remove_manager)
                 db.session.commit()
@@ -350,26 +348,27 @@ def user_table():
             row.is_superuser = False
             db.session.commit()
         #Assign Managers
-        elif managerform.manager_list.data == row.name:
-            row.manager_id = row.id
-            db.session.commit()
+    # for row in users:
+    #     for i in managerform.manager_id.choices:
+    #         i.id = row.manager_id
+    #         db.session.commit()
+        # for i in manager_list:
+        #     if i.id in row:   
     return render_template("table.html", row=row, users = users, form = form, managerform = managerform)
 
 #Define delete user route
-@app.route("/user/<int:id>/delete", methods=['GET','POST'])
+# @views.route("/user/<int:id>/delete", methods=['GET','POST'])
+# def delete_user(id):
+#     if request.method == 'POST':
+#         person = User.query.get_or_404(id)
+#         db.session.delete(person)
+#         db.session.commit()
+#         flash('Your post has been deleted!', 'success')
+#         return render_template("table.html", id = id, person = person)
+
+#Define delete user route
+@views.route("/user/<int:id>/delete", methods=['GET','POST'])
 def delete_user(id):
-    if request.method == 'POST':
-        user = User.query.get_or_404(id)
-        db.session.delete(user)
-        db.session.commit()
-        flash('Your post has been deleted!', 'success')
-        return render_template("table.html", id = id, user = user)
-
-
-
-# #define edit_user route
-@views.route("/edit_user/<int:id>", methods = ['GET','POST'])
-def edit_user(id):
     #get users from user table that are approved and have the same school id as current user
     user = User.query.get_or_404(id)
     form = EditUserForm()
@@ -384,6 +383,22 @@ def edit_user(id):
         flash('Your changes have been saved')
         return redirect(url_for('views.user_table'))
     return render_template("edit_user.html", form = form, user = user)
+
+
+# #define edit_user route
+@views.route("/edit_user/<int:id>", methods = ['GET','POST'])
+def edit_user(id):
+    #get users from user table that are approved and have the same school id as current user
+    user = User.query.get_or_404(id)
+    form = EditUserForm()
+    if request.method == "POST" and form.validate():
+        if form.delete.data == True:
+            db.session.delete(user)
+            db.session.commit()
+            flash('User has been rejected', category='success')
+        return redirect(url_for('views.user_table'))
+    return render_template("delete_user.html", form = form, user = user)
+
 
  #Define select Query Manager route
 @views.route("/select_manager", methods = ['GET','POST'])

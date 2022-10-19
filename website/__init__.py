@@ -203,7 +203,36 @@ def create_app():
         db.session.add(indotpoints14)
         db.session.commit()
 
+        # print('Database populated')
+
+        #Insert in Response
+        # #Section 1
+        for questr in Questions.query.all():
+            inresponse = Response(questionnaire_id = questr.questionnaire_id, section_id = questr.section_id, question_id = questr.id)
+            db.session.add(inresponse)
+            db.session.commit()
+
+        #Insert in Evidence 
+        #Section 1
+        for queste in Questions.query.all():
+            inevidence = Evidence(questionnaire_id = queste.questionnaire_id, section_id = queste.section_id, question_id = queste.id)
+            db.session.add(inevidence)
+            db.session.commit()
+
+        #Insert in Comments
+        for questc in Questions.query.all():
+            incomments = Comments(questionnaire_id = questc.questionnaire_id, section_id = questc.section_id, question_id = questc.id)
+            db.session.add(incomments)
+            db.session.commit()
+
+        #Insert in Action
+        for questa in Questions.query.all():
+            inaction = Action(questionnaire_id = questa.questionnaire_id, section_id = questa.section_id, question_id = questa.id)
+            db.session.add(inaction)
+            db.session.commit()
+
         print('Database populated')
+
 
     
         #Define expiry date function

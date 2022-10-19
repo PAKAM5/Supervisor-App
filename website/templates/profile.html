@@ -10,7 +10,13 @@
       <div class="media-body">
         <h2 class="account-heading">{{ current_user.username }}</h2>
         <p class="text-secondary">{{ current_user.email }}</p>
-        <p class="text-secondary">{{ current_user.position }}</p>
+        {% if current_user.is_superuser == True %}
+        <p class="text-secondary">Administrator</p>
+        {% elif current_user.is_manager == True %}
+        <p class="text-secondary">Manager</p>
+        {% else %}
+        <p class="text-secondary">Supervisor</p>
+        {% endif %}
       </div>
     </div>
       <form method="POST" action="" enctype="multipart/form-data">

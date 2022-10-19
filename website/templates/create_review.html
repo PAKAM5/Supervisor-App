@@ -15,16 +15,19 @@
                 <!--for all sections-->
                 {% for l in lsec %}
                 <!--Multiple questions list of dictionaires-->
-                {{l['section_id']}}
-                {{l['section_title']}}
+                <h3>{{l['section_id']}}. &nbsp; {{l['section_title']}}</h3>
 
                 <h1></h1>
                  {%for lquestions in l['questions']%}
-                 {{lquestions['question_id']}}
-                 {{lquestions['question_title']}}
+                 <!--{{lquestions['question_id']}}
+                 {{lquestions['question_title']}}-->
+
+                 {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
+                 {{lquestions['question_title']}}                 
+
                  {%for d in lquestions['dotpoints']%}
                     {{d['dotpoint_id']}}
-                    {{d['dotpoint_title']}}
+                    {{d['dotpoint_name']}}
                     
                     <div>
                     {{ form.choices.label(class="form-control-label") }}

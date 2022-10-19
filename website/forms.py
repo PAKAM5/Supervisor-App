@@ -7,7 +7,7 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Le
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from werkzeug.utils import secure_filename
 from wtforms.fields import DateField, EmailField, TelField, SelectMultipleField
-from wtforms_sqlalchemy.fields import QuerySelectField
+# from wtforms_sqlalchemy.fields import QuerySelectField
 from .models import User
 
 
@@ -144,11 +144,13 @@ class ApprovalForm(FlaskForm):
     submit = SubmitField("Submit")
     
 class QueryManager(FlaskForm):
-    manager_list = QuerySelectField(
-        'Assign a Manager',
-        query_factory=lambda: User.query.filter_by(is_manager = True).order_by(User.name),
-        allow_blank=False
-    )
+    manager_id = SelectField('Assign a Manager', coerce=int)
+
+    # manager_list = QuerySelectField(
+    #     'Assign a Manager',
+    #     query_factory=lambda: User.query.filter_by(is_manager = True).order_by(User.name),
+    #     allow_blank=False
+    # )
     
 
 

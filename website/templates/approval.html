@@ -19,7 +19,10 @@
                 <tr>
                     <td>{{ user.name }}</td>
                     <td>{{ user.email }}</td>
-                    <td>{{ form.accept }}</td>
+                    {%for accept in form.accept%}
+                    <td>{{accept.label}}</td>
+                     <td>{{ accept }}</td>
+                    {%endfor%}
                 </tr>
                 
             </fieldset>      
