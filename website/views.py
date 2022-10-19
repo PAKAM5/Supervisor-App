@@ -332,25 +332,29 @@ def user_table():
     #Get users from user table that are not current user
     users = User.query.filter(User.id != current_user.id).filter_by(school_id = current_user.school_id, is_approved = True).all()
     #Get managers whose school id is the same as current user from the manager table
+    # managers = User.filter.(User.id != current_users.id).filter_by(school_id = current_user.id, is_approved = True).all()
     available_managers = Manager.query.filter_by(school_id = current_user.school_id).all()
     #Now forming the list of tuples for SelectField
     manager_list=[(i.id, i.name) for i in available_managers]
     managerform.manager_id.choices = manager_list
-    for row in users:
-        #Assign roles
-        #get value of name {{user}} from form and assign to variable
-        name = request.form.get("{{user}}")
-        for value in name:
-            if value == 'manager':
-                row.is_manager = True
-                db.session.commit()
-                add_manager = Manager(name = row.name, school_id = row.school_id, id = row.id)
-                db.session.add(add_manager)
-                db.session.commit()
-            elif value == 'superuser':
-                row.is_superuser = True
-                db.session.commit()
-      
+ 
+    #Assign roles
+    #get value of name {{user}} from form and assign to variable
+    for key, value in request.form.items():
+        for user in users:
+            if key == user.email:
+                if value == 'superuser':
+                    row.is_superuser = True
+                    db.session.commit()
+
+                elif value == 'manager':
+                    row.is_manager = True
+                    db.session.commit()
+                    add_manager = Manager(name = row.name, school_id = row.school_id, id = row.id)
+                    db.session.add(add_manager)
+                    db.session.commit()
+                
+        
 
 
 
@@ -383,7 +387,7 @@ def user_table():
     #         db.session.commit()
         # for i in manager_list:
         #     if i.id in row:   
-    return render_template("table.html", row=row, users = users, form = form, managerform = managerform)
+    return render_template("table.html", users = users, form = form, managerform = managerform)
 
 
 #Define delete user route
