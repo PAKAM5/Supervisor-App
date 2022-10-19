@@ -23,35 +23,33 @@
                  {{lquestions['question_title']}}-->
 
                  {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
-                 {{lquestions['question_title']}}                 
+                 {{lquestions['question_title']}} 
+                 <div>
+                    <a>1<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"   type = 'radio' value = '1'/></a>
+                    <a>2<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '2'/></a>
+                    <a>3<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '3'/></a>
+                    <a>4<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '4'/></a>
+                    <a>5<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '5'/></a>
+                 </div> 
 
                  {%for d in lquestions['dotpoints']%}
                     {{d['dotpoint_id']}}
                     {{d['dotpoint_name']}}
                     
-                    <div>
-                    {{ form.choices.label(class="form-control-label") }}
-                {% if form.choices.errors %}
-                    {{ form.choices(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.choices.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                
+                   
                 <div>
-                {% else %}
-                   {% for choices in form.choices %}
-
-                    {{ choices.label}}
-                    {{ choices}}
-
-                      
-                {% endfor %} 
-                {% endif %}
+                <div>
+                    <textarea placeholder = Comments id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                 </div>
                 <div>
-                    {{ form.comments.label(class="form-control-label") }}
+                    <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                </div>
+                <div>
+                    <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                </div>
+
+
+                    <!--{{ form.comments.label(class="form-control-label") }}
                     {% if form.comments.errors %}
                         {{ form.comments(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
@@ -93,7 +91,7 @@
                         {% endif %}
     
                     {%endif%}
-                </div>
+                </div>-->
                  
 
                 <!--Single Questions-->
@@ -101,6 +99,7 @@
                 {% endfor %}
                 {% endfor %}
                 {%endfor%}
+                
                 
                 
                 

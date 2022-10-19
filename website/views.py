@@ -174,9 +174,10 @@ def create_appraisal():
         # review = Response(title = form.choices.data )
        #create for loop for entry in choices
 
-       
-        for row in form.choices.data:  
-            review = Response(title = row )
+        choices = Response.query(Response.rating).all()
+        for choice in choices:
+            choice = request.form[str("s{{l['section_id']}}q{{lquestions['question_id']}}")]
+            review = Response(rating = choice )
             db.session.add(review)
             db.session.commit()
         #Create for loop for every entry in Evidence

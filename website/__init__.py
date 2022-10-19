@@ -161,75 +161,54 @@ def create_app():
         #Inset values into table dotpoints
         #Insert values in table Dotpoints for all questions
         indotpoints = Dotpoints(sequence_id = 1, question_id =1, questionnaire_id =1, section_id = 1, title = "Has a copy of and complies with job")
+        indotpoints = Dotpoints(sequence_id = 2, question_id =1, questionnaire_id =1, section_id = 1, title = "Is also very nice")
+        indotpoints = Dotpoints(sequence_id = 3, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
+        indotpoints = Dotpoints(sequence_id = 4, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
+        indotpoints = Dotpoints(sequence_id = 5, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
+        indotpoints = Dotpoints(sequence_id = 6, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
         db.session.add(indotpoints)
         db.session.commit()
-        indotpoints2 = Dotpoints(sequence_id = 2,question_id =2, questionnaire_id =1, section_id =1, title = "Very good man")
+        indotpoints2 = Dotpoints(sequence_id = 1,question_id =2, questionnaire_id =1, section_id =1, title = "Very good man")
         db.session.add(indotpoints2)
         db.session.commit()
-        indotpoints3 = Dotpoints(sequence_id = 3, question_id =  3, questionnaire_id = 1, section_id = 1, title = "Very Good Man" )
+        indotpoints3 = Dotpoints(sequence_id = 1, question_id =  3, questionnaire_id = 1, section_id = 1, title = "Very Good Man" )
         db.session.add(indotpoints3)
         db.session.commit()
-        indotpoints4 = Dotpoints(sequence_id = 4, question_id =4, questionnaire_id = 1, section_id =1, title = "Very")
+        indotpoints4 = Dotpoints(sequence_id = 1, question_id =4, questionnaire_id = 1, section_id =1, title = "Very")
         db.session.add(indotpoints4)
         db.session.commit()
-        indotpoints5 = Dotpoints(sequence_id = 5, question_id = 1, questionnaire_id =1, section_id = 2, title = "Very")
+        indotpoints5 = Dotpoints(sequence_id = 1, question_id = 1, questionnaire_id =1, section_id = 2, title = "Very")
         db.session.add(indotpoints5)
         db.session.commit()
-        indotpoints6 = Dotpoints(sequence_id = 6, question_id = 2, questionnaire_id = 1, section_id =2 ,title = "Very")
+        indotpoints6 = Dotpoints(sequence_id = 1, question_id = 2, questionnaire_id = 1, section_id =2 ,title = "Very")
         db.session.add(indotpoints6)
         db.session.commit()
-        indotpoints7 = Dotpoints(sequence_id = 7, question_id = 3, questionnaire_id = 1, section_id =2, title = "Very")
+        indotpoints7 = Dotpoints(sequence_id = 1, question_id = 3, questionnaire_id = 1, section_id =2, title = "Very")
         db.session.add(indotpoints7)
         db.session.commit()
-        indotpoints8 = Dotpoints(sequence_id = 8, question_id =4, questionnaire_id = 1, section_id = 2, title = "Very")
+        indotpoints8 = Dotpoints(sequence_id = 1, question_id =4, questionnaire_id = 1, section_id = 2, title = "Very")
         db.session.add(indotpoints8)
         db.session.commit()
-        indotpoints9 = Dotpoints(sequence_id = 9, question_id = 5, questionnaire_id =1, section_id =2,  title = "Very")
+        indotpoints9 = Dotpoints(sequence_id = 1, question_id = 5, questionnaire_id =1, section_id =2,  title = "Very")
         db.session.add(indotpoints9)
         db.session.commit()
-        indotpoints10 = Dotpoints(sequence_id = 10, question_id = 1, questionnaire_id = 1, section_id = 3, title = "Very")
+        indotpoints10 = Dotpoints(sequence_id = 1, question_id = 1, questionnaire_id = 1, section_id = 3, title = "Very")
         db.session.add(indotpoints10)
         db.session.commit()
-        indotpoints11 = Dotpoints(sequence_id = 11, question_id = 2, questionnaire_id = 1, section_id = 3, title = "Very")
+        indotpoints11 = Dotpoints(sequence_id = 1, question_id = 2, questionnaire_id = 1, section_id = 3, title = "Very")
         db.session.add(indotpoints11)
         db.session.commit()
-        indotpoints12 = Dotpoints(sequence_id = 12, question_id = 3, questionnaire_id = 1, section_id = 3, title = "Very")
+        indotpoints12 = Dotpoints(sequence_id = 1, question_id = 3, questionnaire_id = 1, section_id = 3, title = "Very")
         db.session.add(indotpoints12)
         db.session.commit()
-        indotpoints13 = Dotpoints(sequence_id = 13, question_id = 1, questionnaire_id = 1, section_id = 4, title = "Very")
+        indotpoints13 = Dotpoints(sequence_id = 1, question_id = 1, questionnaire_id = 1, section_id = 4, title = "Very")
         db.session.add(indotpoints13)
         db.session.commit()
-        indotpoints14 = Dotpoints(sequence_id = 14, question_id = 2, questionnaire_id = 1, section_id = 4, title = "Very")
+        indotpoints14 = Dotpoints(sequence_id = 1, question_id = 2, questionnaire_id = 1, section_id = 4, title = "Very")
         db.session.add(indotpoints14)
         db.session.commit()
 
         # print('Database populated')
-
-        #Insert in Response
-        # #Section 1
-        for questr in Questions.query.all():
-            inresponse = Response(questionnaire_id = questr.questionnaire_id, section_id = questr.section_id, question_id = questr.id)
-            db.session.add(inresponse)
-            db.session.commit()
-
-        #Insert in Evidence 
-        #Section 1
-        for queste in Questions.query.all():
-            inevidence = Evidence(questionnaire_id = queste.questionnaire_id, section_id = queste.section_id, question_id = queste.id)
-            db.session.add(inevidence)
-            db.session.commit()
-
-        #Insert in Comments
-        for questc in Questions.query.all():
-            incomments = Comments(questionnaire_id = questc.questionnaire_id, section_id = questc.section_id, question_id = questc.id)
-            db.session.add(incomments)
-            db.session.commit()
-
-        #Insert in Action
-        for questa in Questions.query.all():
-            inaction = Action(questionnaire_id = questa.questionnaire_id, section_id = questa.section_id, question_id = questa.id)
-            db.session.add(inaction)
-            db.session.commit()
 
         print('Database populated')
 

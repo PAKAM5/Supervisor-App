@@ -177,14 +177,14 @@ class Response(db.Model):
     section_id = db.Column(db.Integer)
     question_id = db.Column(db.Integer)
     # sequence_id = db.Column(db.Integer)
-    title = db.Column(db.String(100))
+    rating = db.Column(db.String(100))
    
     #make questionnaire, question, section,  sequence   - primary key constraint and foreign key constraint
     __table_args__ = (db.PrimaryKeyConstraint( 'questionnaire_id', 'section_id', 'question_id'), db.ForeignKeyConstraint(['questionnaire_id', 'section_id', 'question_id'], ['questions.questionnaire_id', 'questions.section_id', 'questions.id']),)
 
     
     def __repr__(self):
-        return f'<SurveyChoices "{self.title}">'
+        return f'<SurveyChoices "{self.rating}">'
 
     #Define action table with foreign key constraint of questionnaire, question, section and dotpoint and primary key constraint of questionnaire, question, section, dotpoint and sequence
 class Action(db.Model):
