@@ -16,6 +16,7 @@ from datetime import datetime, time, date, timedelta, timezone
 #from send_email import send_email
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.date import DateTrigger
+from sqlalchemy import asc
 from . import app
 
 
@@ -164,90 +165,44 @@ def create_appraisal():
     action = ""
     text = ""
 
-
-    if form.validate_on_submit() and request.method == 'POST':
+    if request.method == 'POST':
         # review = Response(title = form.choices.data 
          #Insert values into table response from Question table
-        for questr in Questions.query.all():
-            inresponse = Response(question_id = questr.id, questionnaire_id = questr.questionnaire_id, section_id = questr.section_id)
-            db.session.add(inresponse)
-            db.session.commit()
-        
-        #Insert values into table Comments from the Question table
-        for questc in Questions.query.all():
-            incomments = Comments(question_id = questc.id, questionnaire_id = questc.questionnaire_id, section_id = questc.section_id)
-            db.session.add(incomments)
-            db.session.commit()
-        
-        #Insert values into table Evidence from the Question table
-        for queste in Questions.query.all():
-            inevidence = Evidence(question_id = queste.id, questionnaire_id = queste.questionnaire_id, section_id = queste.section_id)
-            db.session.add(inevidence)
-            db.session.commit()
-
-        #Insert values into table Action from the Question table
-        for questa in Questions.query.all():
-            inaction = Action(question_id = questa.id, questionnaire_id = questa.questionnaire_id, section_id = questa.section_id)
-            db.session.add(inaction)
-            db.session.commit()
     
-         #query rating column from response table
-        ratingquery = Response.query.all()
-        #query comments column from comments table
-        commentsquery = Comments.query.all()
-        #query evidence column from evidence table
-        evidencequery = Evidence.query.all()
-        #query action column from action table
-        actionquery = Action.all()
-
         for key, value in request.form.items():
-            if key.startswith('response'):
-                for r in ratingquery:
-                    rev = Response(rating = value)
-                    db.session.add(rev)
-                    db.session.commit()
-            if key.startswith('evidence'):
-                for e in evidencequery:
-                    evi =  Evidence(title = value)
-                    db.session.add(evi)
-                    db.session.commit()
-            if key.startswith('comments'):
-                for c in commentsquery:
-                    comments.append = value
-                    com = Comments(title = value)
-                    db.session.add(com)
-                    db.session.commit()
-            if key.startswith('action'):
-                for a in actionquery:
-                    act = Action(title = value)
-                    db.session.add(act)
-                    db.session.commit()
-
-
-        # choices = Response.query(Response.rating).all()
-        # for choice in choices:
-        #     choice = request.form[str("s{{l['section_id']}}q{{lquestions['question_id']}}")]
-        #     review = Response(rating = choice )
-        #     db.session.add(review)
-        #     db.session.commit()
-        # #Create for loop for every entry in Evidence
-
-        # for row in form.evidence.data:
-        #     evidence = Evidence(title = row )
-        #     db.session.add(evidence)
-        #     db.session.commit()
-        # #Create for loop for every entry in Comments
-
-        # for row in form.comments.data:
-        #     comments = Comments(title = row )
-        #     db.session.add(comments)
-        #     db.session.commit()
-        # #Create for loop for every entry in Action
-
-        # for row in form.actions.data:
-        #     action = Action(title = row )
-        #     db.session.add(action)
-        #     db.session.commit()
+            if key.find('responses') == 0:
+                name = 'responses'
+            elif key.find('commentss') == 0:
+                name = 'commentss'
+            elif key.find('evidences') == 0:
+                name = 'evidences'
+            elif key.find('actions') == 0:
+                name = 'actions'
+            else:
+                continue
+            if key.find('q') == '-1':
+                continue
+            if (name == 'evidences' or name == 'actions'):
+                if not current_user.is_superuser and not current_user.is_manager:
+                    return 403
+            section_num = key[len(name):key.find('q')]
+            question_num = key[key.find('q') + 1:]
+            if name == 'responses':
+                resp = Response(questionnaire_id =1, section_id = section_num, question_id =question_num, user_id = current_user.id, rating = value )
+                db.session.add(resp)
+                db.session.commit()
+            elif name == 'commentss':
+                comm = Comments(questionnaire_id = 1, section_id = section_num, question_id = question_num, user_id = current_user.id, title = value)
+                db.session.add(comm)
+                db.session.commit()
+            elif name == 'evidences':
+                evi = Evidence(questionnaire_id = 1, section_id = section_num, question_id = question_num, user_id = current_user.id, title = value)
+                db.session.add(evi)
+                db.session.commit()
+            else:
+                act = Action(questionnaire_id = 1, section_id = section_num, question_id = question_num, user_id = current_user.id,  title = value)
+                db.session.add(act)
+                db.session.commit()
         flash("Your appraisal has been created!", category='success')
         return redirect(url_for('views.saved_reviews'))
 
@@ -268,11 +223,13 @@ def about():
 # #define saved reviews page 
 @views.route("/saved-reviews")
 def saved_reviews():
-    #get reviews from survey table where author is current user
-    reviews = Survey.query.filter_by(author = current_user).all()
-    
-    # reviews = Survey.query.all()
-    return render_template('saved_reviews.html', reviews = reviews)
+    #select distinct dateposted from Response table where user id is equal to current_user
+
+    #select distinct value from date_posted column from Response table where user id is equal to current_user
+    rd = Response.query.with_entities(Response.date_posted).filter(Response.user_id == current_user.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+
+
+    return render_template('saved_reviews.html', rd = rd)
 
 
 #define managed reviews page

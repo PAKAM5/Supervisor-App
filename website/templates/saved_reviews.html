@@ -7,16 +7,20 @@
 <div>
   <h2> My Reviews </h2>
 </div>
-{% for review in reviews %}
+{% for r in rd %}
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + review.author.image_file) }}">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ review.author.name }}</a>
-              <small class="text-muted">{{ review.date_posted.strftime('%Y-%m-%d') }}</small>
+              <a class="mr-2" href="#">{{ current_user.first_name }}{{current_user.last_name}}</a>
+              <small class="text-muted">{{ r.date_posted.strftime('%Y-%m-%d') }}</small>
             </div>
-            <h2><a class="article-title" href="{{ url_for('views.create_appraisal') }}">{{ review.title }}</a></h2>
-            <p class="article-content">{{ review.survey }}</p>
+            <h2><a class="article-title" href="{{ url_for('views.create_appraisal') }}">Appraisal {{ r.date_posted.strftime('%Y-%m-%d') }}</a></h2>
+            <p class="article-content"> <ul>
+              <li>{{r.date_posted}}</li>
+            </ul>
+    
+            </p>
           </div>
         </article>
     {% endfor %}

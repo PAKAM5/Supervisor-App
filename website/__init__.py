@@ -16,7 +16,7 @@ from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 from flask_migrate import Migrate
 import datetime
-import smtplib
+
 
 
 
@@ -161,15 +161,34 @@ def create_app():
         db.session.commit()
         #Inset values into table dotpoints
         #Insert values in table Dotpoints for all questions
-        indotpoints = Dotpoints(sequence_id = 1, question_id =1, questionnaire_id =1, section_id = 1, title = "Has a copy of and complies with job")
-        indotpoints = Dotpoints(sequence_id = 2, question_id =1, questionnaire_id =1, section_id = 1, title = "Is also very nice")
-        indotpoints = Dotpoints(sequence_id = 3, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
-        indotpoints = Dotpoints(sequence_id = 4, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
-        indotpoints = Dotpoints(sequence_id = 5, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
-        indotpoints = Dotpoints(sequence_id = 6, question_id =1, questionnaire_id =1, section_id = 1, title = "Very helpful too")
+        indotpoints = Dotpoints(questionnaire_id =1, section_id = 1, question_id =1, sequence_id = 1, title = "Has a copy of and complies with job")
+        db.session.add(indotpoints)
+        indotpoints = Dotpoints(questionnaire_id =1, section_id = 1, question_id =1, sequence_id = 2, title = "Is also very nice")
+        db.session.add(indotpoints)
+        indotpoints = Dotpoints(questionnaire_id =1, section_id = 1, question_id =1, sequence_id = 3, title = "Very helpful too")
+        db.session.add(indotpoints)
+        indotpoints = Dotpoints(questionnaire_id =1, section_id = 1, question_id =1, sequence_id = 4, title = "Very helpful too")
+        db.session.add(indotpoints)
+        indotpoints = Dotpoints(questionnaire_id =1, section_id = 1, question_id =1, sequence_id = 5, title = "Very helpful too")
+        db.session.add(indotpoints)
+        indotpoints = Dotpoints(questionnaire_id =1, section_id = 1, question_id =1, sequence_id = 6, title = "Very helpful too")
         db.session.add(indotpoints)
         db.session.commit()
-        indotpoints2 = Dotpoints(sequence_id = 1,question_id =2, questionnaire_id =1, section_id =1, title = "Very good man")
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 1, title = "Very good man")
+        db.session.add(indotpoints2)
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 2, title = "Very good man")
+        db.session.add(indotpoints2)
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 3, title = "Very good man")
+        db.session.add(indotpoints2)
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 4, title = "Very good man")
+        db.session.add(indotpoints2)
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 5, title = "Very good man")
+        db.session.add(indotpoints2)
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 6, title = "Very good man")
+        db.session.add(indotpoints2)
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 7, title = "Very good man")
+        db.session.add(indotpoints2)
+        indotpoints2 = Dotpoints(questionnaire_id =1, section_id =1, question_id =2, sequence_id = 8, title = "Very good man")
         db.session.add(indotpoints2)
         db.session.commit()
         indotpoints3 = Dotpoints(sequence_id = 1, question_id =  3, questionnaire_id = 1, section_id = 1, title = "Very Good Man" )
