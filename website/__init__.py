@@ -13,9 +13,10 @@ from sqlalchemy.sql import func, select
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_bcrypt import Bcrypt
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from flask_migrate import Migrate
 import datetime
+import smtplib
 
 
 
@@ -212,7 +213,7 @@ def create_app():
 
         print('Database populated')
 
-
+       
     
         #Define expiry date function
         def expiry_date():
@@ -242,21 +243,14 @@ def create_app():
     #engine.connect()
 
     #set up email
-    # app.config['MAIL_SERVER']='smtp.gmail.com' #127.0.0.1
-    # app.config['MAIL_PORT'] = 465
-    # app.config['MAIL_USERNAME'] = None
-    # app.config['MAIL_PASSWORD'] = None
-    # app.config['MAIL_USE_TLS'] = False
-    # app.config['MAIL_USE_SSL'] = False
-    # mail = Mail(app)
 
-    app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-    app.config['MAIL_PORT'] = 587
-    app.config['MAIL_USE_TLS'] = True
-    app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
-    app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
+    app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+    app.config['MAIL_PORT'] = 465
+    app.config['MAIL_USERNAME'] = "test2022965@gmail.com"
+    app.config['MAIL_PASSWORD'] = "Test2022"
+    app.config['MAIL_USE_SSL'] = True
     mail = Mail(app)
-
+    
     #initialise database
     # db.init_app(app)
 

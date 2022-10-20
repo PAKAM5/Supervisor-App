@@ -21,7 +21,7 @@ def load_user(user_id):
 
 #Define school table
 class School(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     school_name = db.Column(db.String(255))
     user = db.relationship('User', backref='school', lazy=True)
 
@@ -96,10 +96,12 @@ class Survey(db.Model):
     date_posted = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
     title = db.Column(db.String(100))
     document_file = db.Column(db.String(255))
-    #Create db relationship with user table as author
 
     #Foreign constraint of user id and manager id in the user table
     ForeignKeyConstraint( ['user_id', 'manager_id'], ['user.id', 'user.manager_id'] )
+
+    def __repr__(self):
+        return f"Survey('{self.title}', '{self.date_posted}')"
 
     
    
@@ -119,6 +121,9 @@ class Questionnaire(db.Model):
     survey_id = db.Column(db.Integer)
     #foreign key constraint for user id and survey id in survey table
     ForeignKeyConstraint( ['user_id', 'survey_id'], ['survey.user_id', 'survey.id'] )
+
+    def __repr__(self):
+        return f"Questionnaire('{self.name}')"
 
 
     

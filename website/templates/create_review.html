@@ -25,11 +25,11 @@
                  {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                  {{lquestions['question_title']}} 
                  <div class = 'rating'>
-                    <a>1<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"   type = 'radio' value = '1'/></a>
-                    <a>2<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '2'/></a>
-                    <a>3<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '3'/></a>
-                    <a>4<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '4'/></a>
-                    <a>5<input id = "s{{l['section_id']}}q{{lquestions['question_id']}}" name ="s{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '5'/></a>
+                    <a>1<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}"   type = 'radio' value = '1'/></a>
+                    <a>2<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '2'/></a>
+                    <a>3<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '3'/></a>
+                    <a>4<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '4'/></a>
+                    <a>5<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '5'/></a>
                  </div> 
 
                  {%for d in lquestions['dotpoints']%}
@@ -38,14 +38,14 @@
                    
                 <div>
                 <div class = 'comments'>
-                    <textarea placeholder = Comments id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                    <textarea placeholder = Comments id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="commentss{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                 </div>
                 {%if current_user.is_superuser%}
                 <div class = 'evidence'>
-                    <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                    <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="evidences{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                 </div>
                 <div class = 'actions'>
-                    <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="s{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                    <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="actions{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                 </div>
                 </div>
                 {%elif current_user.is_manager%}

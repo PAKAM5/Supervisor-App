@@ -82,23 +82,6 @@ def approval():
                     db.session.commit()
                     flash('User has been rejected', category='success')
                 break  
-
-        # if form.accept.data == 'accept':
-        #     user.is_approved = True
-        #     db.session.commit()
-        #     flash('User has been approved', category='success')
-        # elif form.accept.data == 'reject':
-        #     db.session.delete(user)
-        #     db.session.commit()
-        #     flash('User has been rejected', category='success')
-        # elif form.accept.data == 'defer':
-        #     user.is_approved = False
-        #     db.session.commit()
-        #     flash('User has been deferred', category='success')
-        # duser = {'user': user}
-    
-    
-      # login_user(users, accept = form.accept.data)
     
     return render_template('approval.html', users=users, form=form)
     
@@ -175,73 +158,101 @@ def create_appraisal():
         lsec.append(dsec)
 
                 
-    review = {}
-    evidence = {}
-    comments = {}
-    action = {}
+    review = ""
+    evidence = ""
+    comments = ""
+    action = ""
     text = ""
 
 
     if form.validate_on_submit() and request.method == 'POST':
-        # review = Response(title = form.choices.data )
-       #create for loop for entry in choices
-
-        choices = Response.query(Response.rating).all()
-        for choice in choices:
-            choice = request.form[str("s{{l['section_id']}}q{{lquestions['question_id']}}")]
-            review = Response(rating = choice )
-            db.session.add(review)
+        # review = Response(title = form.choices.data 
+         #Insert values into table response from Question table
+        for questr in Questions.query.all():
+            inresponse = Response(question_id = questr.id, questionnaire_id = questr.questionnaire_id, section_id = questr.section_id)
+            db.session.add(inresponse)
             db.session.commit()
-        #Create for loop for every entry in Evidence
-
-        for row in form.evidence.data:
-            evidence = Evidence(title = row )
-            db.session.add(evidence)
+        
+        #Insert values into table Comments from the Question table
+        for questc in Questions.query.all():
+            incomments = Comments(question_id = questc.id, questionnaire_id = questc.questionnaire_id, section_id = questc.section_id)
+            db.session.add(incomments)
             db.session.commit()
-        #Create for loop for every entry in Comments
-
-        for row in form.comments.data:
-            comments = Comments(title = row )
-            db.session.add(comments)
+        
+        #Insert values into table Evidence from the Question table
+        for queste in Questions.query.all():
+            inevidence = Evidence(question_id = queste.id, questionnaire_id = queste.questionnaire_id, section_id = queste.section_id)
+            db.session.add(inevidence)
             db.session.commit()
-        #Create for loop for every entry in Action
 
-        for row in form.actions.data:
-            action = Action(title = row )
-            db.session.add(action)
+        #Insert values into table Action from the Question table
+        for questa in Questions.query.all():
+            inaction = Action(question_id = questa.id, questionnaire_id = questa.questionnaire_id, section_id = questa.section_id)
+            db.session.add(inaction)
             db.session.commit()
+    
+         #query rating column from response table
+        ratingquery = Response.query.all()
+        #query comments column from comments table
+        commentsquery = Comments.query.all()
+        #query evidence column from evidence table
+        evidencequery = Evidence.query.all()
+        #query action column from action table
+        actionquery = Action.all()
+
+        for key, value in request.form.items():
+            if key.startswith('response'):
+                for r in ratingquery:
+                    rev = Response(rating = value)
+                    db.session.add(rev)
+                    db.session.commit()
+            if key.startswith('evidence'):
+                for e in evidencequery:
+                    evi =  Evidence(title = value)
+                    db.session.add(evi)
+                    db.session.commit()
+            if key.startswith('comments'):
+                for c in commentsquery:
+                    comments.append = value
+                    com = Comments(title = value)
+                    db.session.add(com)
+                    db.session.commit()
+            if key.startswith('action'):
+                for a in actionquery:
+                    act = Action(title = value)
+                    db.session.add(act)
+                    db.session.commit()
+
+
+        # choices = Response.query(Response.rating).all()
+        # for choice in choices:
+        #     choice = request.form[str("s{{l['section_id']}}q{{lquestions['question_id']}}")]
+        #     review = Response(rating = choice )
+        #     db.session.add(review)
+        #     db.session.commit()
+        # #Create for loop for every entry in Evidence
+
+        # for row in form.evidence.data:
+        #     evidence = Evidence(title = row )
+        #     db.session.add(evidence)
+        #     db.session.commit()
+        # #Create for loop for every entry in Comments
+
+        # for row in form.comments.data:
+        #     comments = Comments(title = row )
+        #     db.session.add(comments)
+        #     db.session.commit()
+        # #Create for loop for every entry in Action
+
+        # for row in form.actions.data:
+        #     action = Action(title = row )
+        #     db.session.add(action)
+        #     db.session.commit()
         flash("Your appraisal has been created!", category='success')
         return redirect(url_for('views.saved_reviews'))
 
     return render_template("create_review.html", lsec=lsec, dsec = dsec, form = form, text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
 
-
-
-# #define create new appraisal page
-# @views.route("/appraisal/new", methods = ['GET','POST'])
-# #@login_required
-# def create_appraisal():
-#     form = SurveyForm()
-#     if form.validate_on_submit() and request.method == 'POST':
-#         review = Survey( author = current_user, title = form.title.data, choices = form.choices.data, comments = form.comments.data, evidence = form.evidence.data, actions = form.actions.data,
-#         choices2 = form.choices2.data, comments2 = form.comments2.data, evidence2 = form.evidence2.data, actions2 = form.actions2.data,
-#         choices3 = form.choices3.data, comments3 = form.comments3.data, evidence3 = form.evidence3.data, actions3 = form.actions3.data,
-#         choices4 = form.choices4.data, comments4 = form.comments4.data, evidence4 = form.evidence4.data, actions4 = form.actions4.data,
-#         choices5 = form.choices5.data, comments5 = form.comments5.data, evidence5 = form.evidence5.data, actions5 = form.actions5.data,
-#         choices6 = form.choices6.data, comments6 = form.comments6.data, evidence6 = form.evidence6.data, actions6 = form.actions6.data,
-#         choices7 = form.choices7.data, comments7 = form.comments7.data, evidence7 = form.evidence7.data, actions7 = form.actions7.data,
-#         choices8 = form.choices8.data, comments8 = form.comments8.data, evidence8 = form.evidence8.data, actions8 = form.actions8.data,
-#         choices9 = form.choices9.data, comments9 = form.comments9.data, evidence9 = form.evidence9.data, actions9 = form.actions9.data,
-#         choices10 = form.choices10.data, comments10 = form.comments10.data, evidence10 = form.evidence10.data, actions10 = form.actions10.data,
-#         choices11 = form.choices11.data, comments11 = form.comments11.data, evidence11 = form.evidence11.data, actions11 = form.actions11.data,
-#         choices12 = form.choices12.data, comments12 = form.comments12.data, evidence12 = form.evidence12.data, actions12 = form.actions12.data,
-#         choices13 = form.choices13.data, comments13 = form.comments13.data, evidence13 = form.evidence13.data, actions13 = form.actions13.data,
-#         choices14 = form.choices14.data, comments14 = form.comments14.data, evidence14 = form.evidence14.data, actions14 = form.actions14.data,)
-#         db.session.add(review)
-#         db.session.commit()
-#         flash ('Your survey has been saved', "success")
-#         return redirect('/saved-reviews')
-#     return render_template("create_appraisal.html", title = "Create New Appraisal", form = form)
 
 #define single appraisal page
 @views.route("/appraisal/<int:review_id>")
@@ -332,8 +343,8 @@ def user_table():
     #Get users from user table that are not current user
     users = User.query.filter(User.id != current_user.id).filter_by(school_id = current_user.school_id, is_approved = True).all()
     #Get managers whose school id is the same as current user from the manager table
-    # managers = User.filter.(User.id != current_users.id).filter_by(school_id = current_user.id, is_approved = True).all()
-    available_managers = Manager.query.filter_by(school_id = current_user.school_id).all()
+    available_managers = User.query.filter(User.id != current_user.id).filter_by(school_id = current_user.id, is_approved = True, is_manager = True).all()
+    # available_managers = Manager.query.filter_by(school_id = current_user.school_id).all()
     #Now forming the list of tuples for SelectField
     manager_list=[(i.id, i.name) for i in available_managers]
     managerform.manager_id.choices = manager_list
@@ -341,19 +352,30 @@ def user_table():
     #Assign roles
     #get value of name {{user}} from form and assign to variable
     for key, value in request.form.items():
+
+
+        id = ""
+        if key.find('manager') == 0:
+            id = key[len('manager')]
+        elif key.find('superuser') == 0:
+            id = key[len('superuser')]
+        elif id == "":
+            continue
+
         for user in users:
-            if key == user.email:
-                if value == 'superuser':
+            if user.id == id:
+                if key[0] == 's':
                     user.is_superuser = True
                     db.session.commit()
 
-                elif value == 'manager':
+                elif key[0] == 'manager':
                     user.is_manager = True
                     db.session.commit()
                     add_manager = Manager(name = user.name, school_id = user.school_id, id = user.id)
                     db.session.add(add_manager)
                     db.session.commit()
                 
+
         
 
 

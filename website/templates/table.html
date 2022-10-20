@@ -17,26 +17,23 @@
             <th>Assign a Manager</th>
         </tr>
         {% for user in users %}
-        {%if user.is_manager == False %}
-        </tr>
+        
+        <tr>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
-            <td><input type="checkbox" id="{{user.email}}" name="{{user.email}}" value="manager"><br></td>
-            <td><input type="checkbox" id="{{user.email}}" name="{{user.email}}" value="superuser"><br></td>
+            <td><input type="checkbox" id="manager{{user.id}}" name="manager{{user.id}}" value="manager"><br></td>
+            <td><input type="checkbox" id="manager{{user.id}}" name="superuser{{user.id}}" value="superuser"><br></td>
             <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
             <td><a href="{{url_for('views.delete_user', id = user.id)}}">Edit</a></td>
+            
+
+            {%if user.is_superuser == False %}
             <td><a >{{managerform.manager_id}}</a></td>
+            {%endif%}
         </tr>
-        {%elif user.is_manager == True%}
-        </tr>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{form.is_manager}}</td>
-            <td> {{form.is_superuser}}</td>
-            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
-            <td><a href="{{url_for('views.delete_user', id = user.id)}}">Edit</a></td>
-        </tr>
-        {%endif%}
+        
+        <p>{{form.is_superuser}}</p>
+        
      
 
         
