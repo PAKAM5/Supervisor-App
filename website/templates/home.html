@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
 <title> {% block title %}Home{% endblock %}</title>
-{% block content %} 
+{% block content %}
+<div style='padding-top: 80px;'> 
 <br>
 &nbsp;
 {%if not user%}
-<h1>Welcome to the Supervisor Appraisal App</h1>
+<h1>
+Welcome to the Supervisor Appraisal App</h1>
 <h2>A user-friendly appraisal experience</h2>
 
 <p><a href="{{ url_for('auth.login') }}">Login</a></p>

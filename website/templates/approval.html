@@ -6,8 +6,8 @@
 
      {%if users %}
      <form method = "post" action = "/approval"><h1>Pending User</h1>
-            <fieldset>
-            <table style ="width:100%" border ="1">
+            <fieldset style='padding-top: 50px;'>
+            <table style ="text-align: center; width:100%" border ="1">
                 <tr>
                     <th>Name</th>
                     <th>Email</th>
@@ -28,7 +28,7 @@
             
             </fieldset>
             <!-- submit buttn goes here -->
-            <div>
+            <div style='text-align: right; padding-top: 25px;'>
                  {{form.submit}}
             </div>
             <div>
