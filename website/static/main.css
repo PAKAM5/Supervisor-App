@@ -451,7 +451,7 @@ ul li::marker{
   content: ' ';
 }
 ul.dp li::marker {
-  content: '&bull;'
+  content: '•'
 }
 
 .steps{
