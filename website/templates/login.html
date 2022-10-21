@@ -4,6 +4,7 @@
 <title> {% block title %}Login{% endblock %}</title>
 
 {% block content %} 
+<div style="width: 380px; margin: 6% auto;">
 <form method = "POST" action="">
     {{ form.hidden_tag() }}
     {{form.csrf_token}}
@@ -53,6 +54,7 @@
             Need An Account? <a class="ml-2" href="{{ url_for('auth.sign_up') }}">Sign Up Now</a>
         </small>-->
     </div>
+ </div>
     <footer role="footer">
         <p>Forget Password? Please Contact With Our Friendly Staff</p>
         <p>Contact Us</p>
