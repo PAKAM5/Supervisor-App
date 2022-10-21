@@ -152,7 +152,7 @@ class Dotpoints(db.Model):
     questionnaire_id = db.Column(db.Integer)
     section_id = db.Column(db.Integer)
     question_id = db.Column(db.Integer)
-    title = db.Column(db.String(100))
+    title = db.Column(db.String(500))
 
    #make questionnaire, question, section, sequence - primary key constraint
     __table_args__ = (db.PrimaryKeyConstraint('sequence_id', 'questionnaire_id', 'section_id', 'question_id'), db.ForeignKeyConstraint(['questionnaire_id', 'section_id', 'question_id'], ['questions.questionnaire_id', 'questions.section_id', 'questions.id']),)

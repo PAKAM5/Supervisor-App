@@ -20,31 +20,32 @@
                 
                  {%for lquestions in l['questions']%}
                  
-                 <div class = 'questions'>
+                 <div class = 'questions'style="width: 1000px; padding-left: 250px;">
 
                 {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                  {{lquestions['question_title']}}
-                 <div class = 'rating'>
+                </div>
+                 <div class = 'rating' style="padding-left: 250px;">
                     <a>1<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}"   type = 'radio' value = '1'/></a>
                     <a>2<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '2'/></a>
                     <a>3<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '3'/></a>
                     <a>4<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}"  type = 'radio' value = '4'/></a>
                     <a>5<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '5'/></a>
                  </div> 
-
-                 <ul class="dp">{%for d in lquestions['dotpoints']%}
+                <div style="padding-left: 250px;">
+                 <ul class="dp" style= "width: 600px; border-style: double; list-style: inside;">{%for d in lquestions['dotpoints']%}
                     <li>{{d['dotpoint_name']}}</li>
                  {%endfor%}</ul>
-                   
+                </div>  
                 <div>
-                    <div class = 'comments'>
+                    <div class = 'comments' style="padding-left: 250px;">
                         <textarea placeholder = Comments id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="commentss{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                     </div>
                     {%if current_user.is_superuser or current_user.is_manager%}
-                    <div class = 'evidence'>
+                    <div class = 'evidence' style="padding-left: 250px;">
                         <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="evidences{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                     </div>
-                    <div class = 'actions'>
+                    <div class = 'actions' style="padding-left: 250px;">
                         <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="actions{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
                     </div>
                     {%endif%}
@@ -104,14 +105,17 @@
                 
                 
 
-            </div>
+            <!--</div>-->
             
             
             
             
         </fieldset>
-        <input type='submit' name='Submit' value='Submit' />
+        
     </form>
+    <div style="text-align: center;">
+    <input type='submit' name='Submit' value='Submit' />
+    </div>
 </div>
 {% endblock %}
 </div>
