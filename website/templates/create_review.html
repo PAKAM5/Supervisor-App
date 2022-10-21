@@ -117,6 +117,16 @@
     <input type='submit' name='Submit' value='Submit' />
     </div>
 </div>
+<body>
+    <button id="test" style="position:fixed;right:100px;bottom:50px;cursor: pointer;padding: 15px;border-radius: 4px;">TOP</button>
+    
+    <script>
+    　　test.onclick = function(){
+    　　　　document.body.scrollTop = document.documentElement.scrollTop = 0;
+    　　}
+    </script>
+    </body>  
+
 {% endblock %}
 </div>
 

@@ -87,7 +87,7 @@
                     <a href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
                     {% else %}
                     <a href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
-                    <img class="rounded-circle article-img" style="height: 25px; width: 25px;" src="{{ url_for('static', filename='web_images/lock.jgp' ) }}">
+                    <img src="{{ url_for('static', filename='web_images/lock.jpg' ) }}" class="rounded-circle article-img" style="height: 25px; width: 25px;" >
                     {% endif %}
                     
                   </div>
