@@ -779,4 +779,8 @@ span{
   font-size: 12px;
   bottom: 68px;
   position: absolute;
+}*/
+
+ul.dp li::marker{
+  content: normal;
 }

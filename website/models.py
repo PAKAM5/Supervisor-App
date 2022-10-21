@@ -25,12 +25,8 @@ class School(db.Model):
     school_name = db.Column(db.String(255))
     user = db.relationship('User', backref='school', lazy=True)
 
-#Define Manager table with school as foreign key
-class Manager(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False)
-    # supervisor_id = db.Column(db.Integer, primary_key=True)
+
+   
     
     
 #define User table
@@ -45,7 +41,6 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(255), nullable=False, default='default.jpg')
     #survey = db.relationship('Survey', backref='author', lazy=True)
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
-    manager_id = db.Column(db.Integer, db.ForeignKey('manager.id'))
     is_approved = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
     is_superuser = db.Column(db.Boolean, default=False)
@@ -68,23 +63,17 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.name}', '{self.email}', '{self.image_file}')"
 
+#Define Manager table with school as foreign key
+class Manager(db.Model):
+    manager_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    employee_id =  db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    __table_args__ = (db.PrimaryKeyConstraint('manager_id','employee_id'),)
 
 #Define Subsciption table
 class Subscription(db.Model):
     school_id = db.Column(db.Integer, db.ForeignKey('school.id'), nullable=False, primary_key = True)
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
-    
-    
-# #define reviews table
-# class Reviews(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-#     date = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-#     title = db.Column(db.String(100))
-#     document_file = db.Column(db.String(255))
-#     survey = db.relationship('Survey', backref='review', lazy=True)
-#     def __repr__(self):
-#         return f"Reviews('{self.title}', '{self.date}')"
 
 
 #Define survey table * Remember to remove this
