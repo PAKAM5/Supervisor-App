@@ -237,16 +237,23 @@ def saved_reviews():
 def managed_reviews():
     if current_user.is_superuser:
         #get reviews where school id is equal to current user school id
-        reviews = Survey.query.filter_by(school_id = current_user.school_id).all()
-        # reviews = Survey.query.all()
-        return render_template("managed_reviews.html", reviews = reviews)
+        emps =  User.query.with_entities(User.id).filter(User.school_id == current_user.school_id).all()
     elif current_user.is_manager:
-        #Get reviews where supervisor manager id is equal to current user id
-        reviews = Survey.query.filter_by(manager_id = current_user.manager_id).all()
-        # reviews = Survey.query.all()
-        return render_template("managed_reviews.html", reviews = reviews)
+        #emps =  SELECT employee from manager WHERE manager = current_user.id"
+        emps = Manager.query.with_entities(Manager.employee_id).label('id').filter(Manager.manager_id ==current_user.id).all()
     else:
         return abort (403)
+    Employees = []
+    for e in emps:
+        name = User.query.with_entities(User.first_name, User.last_name).filter(User.id == e.id).first()
+        Employee = {'id': e.id, 'name':name.first_name + " " + name.last_name, }
+        Employee['reviews'] = []
+        # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
+        rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        for r in rev:
+            Employee['reviews'].append(r.date_posted)
+        Employees.append(Employee)
+    return render_template('managed_reviews.html', Employees = Employees) 
     
     
 #define redirect-to-home route
