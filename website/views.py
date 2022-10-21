@@ -208,6 +208,85 @@ def create_appraisal():
 
     return render_template("create_review.html", lsec=lsec, dsec = dsec, form = form, text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
 
+#Define appraisal form page
+@views.route("/appraisal-form", methods = ['GET','POST'])
+#@login_required
+def appraisal_form():
+    form = AppraisalForm()
+    survey = Survey()
+    
+    #get the first query from the questionnaire table
+    questionnaire = Questionnaire.query.filter_by(id=1).first()
+    #Create empty list for sections
+    lsec = []
+    #Create empty dictionary for sections
+    #Filter the sections table where the questionnaire id is equal to the questionnaire id
+    sections = Sections.query.filter_by(questionnaire_id = questionnaire.id).all()
+    ####Create a dictionary for sections, singular dictionary keys for the section id and one for the section name and value of elements in section table
+    for sec in sections:
+        #Create dictionary with values of section id and sections title
+        dsec = {'section_id': sec.id, 'section_title': sec.title}
+        dsec['questions'] = []
+
+        #dsec = {section.id:section.id, section.title: section.title}
+        #Filter the questions table where the questionnaire id is equal to the questionnaire id and section id is equal to the section id
+        questions = Questions.query.filter_by(questionnaire_id = 1, section_id = sec.id).all()
+        
+        #Create a dictionary with question id key and question name key
+        for ques in questions:
+            dques = {'question_id': ques.id, 'question_title': ques.title}
+            dques['dotpoints'] = []
+            #Get query for completed rating and comments in response table
+            rate = Response.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =request.args['user'], date_posted = request.args['date'] ).first()
+            comm = Comments.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =request.args['user'], date_posted = request.args['date'] ).first()
+            dques['rating'] = rate.rating
+            dques['comments'] = comm.title
+            #Filter the dotpoints table where the questionnaire id is equal to the questionnaire id, section is is section id  and question id is equal to the question id
+            dotpoints = Dotpoints.query.filter_by(questionnaire_id = 1, section_id = sec.id, question_id = ques.id).all()
+            #Create a dictionary with dotpoint id key and dotpoint name key
+            for dot in dotpoints:
+                ddot = {'dotpoint_id': dot.sequence_id, 'dotpoint_name': dot.title}
+                #Create empty list for dotpoints
+                dques['dotpoints'].append(ddot)
+            #Append question list to section dictionary
+            dsec['questions'].append(dques)
+        #Append section dictionary to list (list for multiple sections)
+        lsec.append(dsec)
+
+                
+    review = ""
+    evidence = ""
+    comments = ""
+    action = ""
+    text = ""
+
+    if request.method == 'POST':
+        # review = Response(title = form.choices.data 
+         #Insert values into table response from Question table
+    
+        for key, value in request.form.items():
+            if key.find('evidences') == 0:
+                name = 'evidences'
+            elif key.find('actions') == 0:
+                name = 'actions'
+            else:
+                continue
+            if key.find('q') == '-1':
+                continue
+            section_num = key[len(name):key.find('q')]
+            question_num = key[key.find('q') + 1:]
+            if name == 'evidences':
+                evi = Evidence(questionnaire_id = 1, section_id = section_num, question_id = question_num, user_id = request.args['user'], date_posted = request.args['date'], title = value)
+                db.session.add(evi)
+                db.session.commit()
+            else:
+                act = Action(questionnaire_id = 1, section_id = section_num, question_id = question_num, user_id = request.args['user'], date_posted = request.args['date'], title = value)
+                db.session.add(act)
+                db.session.commit()
+        flash("Your appraisal has been updated!", category='success')
+        return redirect(url_for('views.managed_reviews'))
+    return render_template('appraisal_form.html', lsec = lsec, questionnaire = questionnaire) 
+
 
 #define single appraisal page
 @views.route("/appraisal/<int:review_id>")
@@ -305,14 +384,11 @@ def user_table():
     #get users from user table that are approved and have the same school id as current user but are not superuser
     # userspre = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
     #Get users from user table that are not current user
-    users = User.query.filter(User.id != current_user.id).filter_by(school_id = current_user.school_id, is_approved = True).all()
+    # users = User.query.outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
+    users = db.session.query(User.id, User.first_name, User.last_name, User.email, Manager.manager_id).select_from(User).join(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
     #Get managers whose school id is the same as current user from the manager table
-    available_managers = User.query.filter(User.id != current_user.id).filter_by(school_id = current_user.id, is_approved = True, is_manager = True).all()
-    # available_managers = Manager.query.filter_by(school_id = current_user.school_id).all()
-    #Now forming the list of tuples for SelectField
-    manager_list=[(i.id, i.name) for i in available_managers]
-    managerform.manager_id.choices = manager_list
- 
+    available_managers = User.query.filter_by(school_id = current_user.school_id, is_approved = True, is_manager = True).all()
+
     #Assign roles
     #get value of name {{user}} from form and assign to variable
     for key, value in request.form.items():
@@ -373,7 +449,7 @@ def user_table():
     #         db.session.commit()
         # for i in manager_list:
         #     if i.id in row:   
-    return render_template("table.html", users = users, form = form, managerform = managerform)
+    return render_template("table.html", users = users, available_managers = available_managers)
 
 
 #Define delete user route

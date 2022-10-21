@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="">
+        <fieldset class="form-group">
+            <div>
+                <h2>{{questionnaire.name}}</h2>
+            </div>
+        
+            <div class = "form-group">
+                <!--for all sections-->
+                {% for l in lsec %}
+                <!--Multiple questions list of dictionaires-->
+                    <h3>{{l['section_id']}}. &nbsp; {{l['section_title']}}</h3>
+                    {%for lquestions in l['questions']%}
+                        <div class = 'questions'>
+                            {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
+                            {{lquestions['question_title']}}
+                            <div class = 'rating'>
+                                rating = {{lquestions['rating']}}
+                            </div>
+                            <ul class="dp">
+                                {%for d in lquestions['dotpoints']%}
+                                    <li>{{d['dotpoint_name']}}</li>
+                                {%endfor%}
+                            </ul>
+                            <div>
+                            <div class = 'comments'>
+                                comments = {{lquestions['comments']}}
+                            </div>
+                            <div class = 'evidence'>
+                                <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="evidences{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                            </div>
+                            <div class = 'actions'>
+                                <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="actions{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>   
+        </fieldset>
+        <input type='submit' name='Submit' value='Submit' />
+    </form>
+</div>
+{% endblock %}
+</div>

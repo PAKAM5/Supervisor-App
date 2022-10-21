@@ -19,30 +19,34 @@
         {% for user in users %}
         
         <tr>
-            <td>{{ user.name }}</td>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
             <td>{{ user.email }}</td>
             <td><input type="checkbox" id="manager{{user.id}}" name="manager{{user.id}}" value="manager"><br></td>
-            <td><input type="checkbox" id="manager{{user.id}}" name="superuser{{user.id}}" value="superuser"><br></td>
+            <td><input type="checkbox" id="superuser{{user.id}}" name="superuser{{user.id}}" value="superuser"><br></td>
             <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
             <td><a href="{{url_for('views.delete_user', id = user.id)}}">Edit</a></td>
             
 
             {%if user.is_superuser == False %}
-            <td><a >{{managerform.manager_id}}</a></td>
+            <td><select name = 'mymanager{{user.id}}'>
+                {%for m in available_managers%}
+                <!-- mid={{m.id}}  umid={{user.manager_id}}-->
+                <option value = "{{m.id}}" {%if m.id == user.manager_id %} selected ="selected" {%endif%}>
+                    {{m.name}}
+                </option>
+                {%endfor%}
+            </select></td>
+            
             {%endif%}
         </tr>
         
-        <p>{{form.is_superuser}}</p>
-        
-     
-
         
         {% endfor %}
     </table>
    
 </body>
 </div>
-{{form.submit}}
+
 
 
 </form>
