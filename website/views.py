@@ -118,7 +118,7 @@ def home():
     user = User()
 
     #Get the matching school name from the school table
-    school = School.query.filter_by(id=current_user.school_id).first()
+    school = School.query.filter_by(id=user.school_id).first()
    
     return render_template("home.html", school =school, user = user)
 
