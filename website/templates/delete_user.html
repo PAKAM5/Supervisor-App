@@ -2,20 +2,20 @@
 
 {%block title%}Delete User{% endblock %}
 {%block content%}
-<form action = "{{url_for('views.delete_user', id=user.id)}}" method = "post">
-    <fieldset>
-        <legend>Delete User</legend>
+<form action = "{{url_for('views.delete_user', id=user.id)}}" method = "POST">
+    {{form.hidden_tag()}}
+    {{ form.csrf_token }}
+    <fieldset>  
         <p>Are you sure you want to delete {{user.first_name}} {{user.last_name}}?</p>
         <div>
-            <p>{{form.delete.label}}{{form.delete}} </p>
-             
+                 <p>{{form.delete.label}}{{form.delete}}</p> 
         </div>     
-        <div>
-            <p><a type = "submit">{{form.submit}}</a></p>
-            <p><a href="{{url_for('views.user_table')}}">No</a></p>
-        <p><a href="{{url_for('views.home')}}">Return to home page</a></p>
-        </div>
-    </fieldset>
+    </fieldset>        
+</form>
+       <div>   
+          <p><a type = "submit">{{form.submit}}</a></p>
+          <p><a href="{{url_for('views.home')}}">Return to home page</a></p>
+        </div>    
 {%endblock%}
 
 

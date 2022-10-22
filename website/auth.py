@@ -63,7 +63,7 @@ def sign_up():
         return redirect(url_for('views.profile'))
     form = RegistrationForm()
     if request.method == 'POST' and form.validate_on_submit():
-            new_user = User (school_id = form.school_id.data, name = 'Employee', phone = form.phone.data, email = form.email.data, password = form.password.data, first_name = form.first_name.data, last_name = form.last_name.data, is_approved = False )
+            new_user = User (school_id = form.school_id.data, name = "Employee", phone = form.phone.data, email = form.email.data, password = form.password.data, first_name = form.first_name.data, last_name = form.last_name.data, is_approved = False )
             db.session.add(new_user)
             db.session.commit()
             flash ('Your account is pending please wait for approval by Head of Boarding', category = 'error')

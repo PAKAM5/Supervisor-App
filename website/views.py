@@ -26,7 +26,7 @@ from . import app
 views = Blueprint('views', __name__)
 
 from .models import db, User, Survey, Files, School, Manager, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
-from .forms import ApprovalForm, SurveyForm, EditProfileForm, EditUserForm, AppraisalForm, QueryManager
+from .forms import ApprovalForm, SurveyForm, EditProfileForm, EditUserForm, AppraisalForm, QueryManager, DeleteUserForm
 
 #define schedule job
 # @app.route("/success", methods=['POST'])
@@ -124,8 +124,6 @@ def home():
 @views.route("/appraisal/new", methods = ['GET','POST'])
 #@login_required
 def create_appraisal():
-    form = AppraisalForm()
-    survey = Survey()
     #get the first query from the questionnaire table
     questionnaire = Questionnaire.query.filter_by(id=1).first()
     #Create empty list for sections
@@ -166,7 +164,6 @@ def create_appraisal():
     text = ""
 
     if request.method == 'POST':
-        # review = Response(title = form.choices.data 
          #Insert values into table response from Question table
     
         for key, value in request.form.items():
@@ -206,7 +203,7 @@ def create_appraisal():
         flash("Your appraisal has been created!", category='success')
         return redirect(url_for('views.saved_reviews'))
 
-    return render_template("create_review.html", lsec=lsec, dsec = dsec, form = form, text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
+    return render_template("create_review.html", lsec=lsec, dsec = dsec,  text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
 
 #Define appraisal form page
 @views.route("/appraisal-form", methods = ['GET','POST'])
@@ -286,7 +283,7 @@ def appraisal_form():
                 db.session.add(act)
                 db.session.commit()
         flash("Your appraisal has been updated!", category='success')
-        return redirect(url_for('views.managed_reviews'))
+        return redirect(url_for('views.managed_completed_reviews'))
     return render_template('appraisal_form.html', lsec = lsec, questionnaire = questionnaire) 
 
 #Define appraisal display page
@@ -335,9 +332,6 @@ def appraisal_display():
             dsec['questions'].append(dques)
         #Append section dictionary to list (list for multiple sections)
         lsec.append(dsec)
-
-
-
                 
     # review = ""
     # evidence = ""
@@ -484,6 +478,29 @@ def managed_reviews():
             Employee['reviews'].append(r.date_posted)
         Employees.append(Employee)
     return render_template('managed_reviews.html', Employees = Employees) 
+
+    #define managed reviews page
+@views.route("/managed-completed-reviews")
+def managed_completed_reviews():
+    if current_user.is_superuser:
+        #get reviews where school id is equal to current user school id
+        emps =  User.query.with_entities(User.id).filter(User.school_id == current_user.school_id).all()
+    elif current_user.is_manager:
+        #emps =  SELECT employee from manager WHERE manager = current_user.id"
+        emps = Manager.query.with_entities(Manager.employee_id).label('id').filter(Manager.manager_id ==current_user.id).all()
+    else:
+        return abort (403)
+    Employees = []
+    for e in emps:
+        name = User.query.with_entities(User.first_name, User.last_name).filter(User.id == e.id).first()
+        Employee = {'id': e.id, 'name':name.first_name + " " + name.last_name, }
+        Employee['reviews'] = []
+        # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
+        rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        for r in rev:
+            Employee['reviews'].append(r.date_posted)
+        Employees.append(Employee)
+    return render_template('managed_completed_reviews.html', Employees = Employees) 
     
     
 #define redirect-to-home route
@@ -557,14 +574,16 @@ def user_table():
     return render_template("table.html", users = users, available_managers = available_managers)
 
 
-#Define delete user route
-@views.route("/user/<int:id>/delete", methods=['GET','POST'])
-def delete_user(id):
+#Define edit user route
+@views.route("/user/<int:id>/edit", methods=['GET','POST'])
+def edit_user(id):
     #get users from user table that are approved and have the same school id as current user
     user = User.query.get_or_404(id)
     form = EditUserForm()
     if request.method == "POST" and form.validate():
         current_user.name = form.username.data
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
         current_user.email = form.email.data
         db.session.commit()
         if form.delete.data == True:
@@ -576,12 +595,12 @@ def delete_user(id):
     return render_template("edit_user.html", form = form, user = user)
 
 
-# #define edit_user route
-@views.route("/edit_user/<int:id>", methods = ['GET','POST'])
-def edit_user(id):
+# #define delete_user route
+@views.route("/delete_user/<int:id>", methods = ['GET','POST'])
+def delete_user(id):
     #get users from user table that are approved and have the same school id as current user
     user = User.query.get_or_404(id)
-    form = EditUserForm()
+    form = DeleteUserForm()
     if request.method == "POST" and form.validate():
         if form.delete.data == True:
             db.session.delete(user)

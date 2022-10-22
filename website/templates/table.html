@@ -12,8 +12,8 @@
             <th>Email</th>
             <th>Provide manager access</th>
             <th>Provide Admin access</th>
-            <th>Remove</th>
             <th>Edit</th>
+            <th>Remove</th>
             <th>Assign a Manager</th>
         </tr>
         {% for user in users %}
@@ -23,8 +23,8 @@
             <td>{{ user.email }}</td>
             <td><input type="checkbox" id="manager{{user.id}}" name="manager{{user.id}}" value="manager"><br></td>
             <td><input type="checkbox" id="superuser{{user.id}}" name="superuser{{user.id}}" value="superuser"><br></td>
-            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Remove</a></td>
-            <td><a href="{{url_for('views.delete_user', id = user.id)}}">Edit</a></td>
+            <td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>
+            <td><a href="{{url_for('views.delete_user', id = user.id)}}">Remove</a></td>
             
 
             {%if user.is_superuser == False %}
@@ -44,6 +44,7 @@
         {% endfor %}
     </table>
    
+    <input type = "submit" value = "Submit">
 </body>
 </div>
 </form>

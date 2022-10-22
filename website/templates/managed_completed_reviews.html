@@ -9,7 +9,7 @@
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
-       {{ employee.name }}
+        <h3>{{ employee.name }}</h3>
         <ul class = 'reviews'>
           {%if employee['reviews']%}
           {%for r in employee['reviews']%}
@@ -22,7 +22,7 @@
           {%else%}
           <li>
             
-              <a>{{employee.name}} has no reviews yet</a>
+              {{employee.name}} has no reviews yet
             
           </li>
           {%endif%}

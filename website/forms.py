@@ -19,14 +19,14 @@ class EditProfileForm(FlaskForm):
     last_name = StringField('Last Name')
     email = StringField('Email', validators=[DataRequired(), Email()])
     licence = StringField ('Licences')
-    position = StringField('Position')
+    # position = StringField('Position')
     picture = FileField('Update Profile Picture(only accept *.jpg,*.png)', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
-    def validate_username(self, username):
-        if username.data != current_user.username:
-            user = User.query.filter_by(name=username.data).first()
-            if user:
-                raise ValidationError('That username is taken. Please choose a different one.')
+    # def validate_username(self, username):
+    #     if username.data != current_user.username:
+    #         user = User.query.filter_by(name=username.data).first()
+    #         if user:
+    #             raise ValidationError('That username is taken. Please choose a different one.')
     def validate_email(self, email):
         if email.data != current_user.email:
             user = User.query.filter_by(email=email.data).first()
@@ -184,10 +184,16 @@ class UploadForm(FlaskForm):
 
 #EditUser Form
 class EditUserForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', )
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    email = StringField('Email')
     is_manager = BooleanField('Manager')
     is_superuser = BooleanField('Superuser')
     delete = BooleanField('Delete')
     submit = SubmitField('Update')
 
+#Delete User Form
+class DeleteUserForm(FlaskForm):
+    delete = BooleanField('Delete')
+    submit = SubmitField('Yes')

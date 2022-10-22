@@ -90,15 +90,6 @@ class Survey(db.Model):
         return f"Survey('{self.title}', '{self.date_posted}')"
 
     
-   
-# class Review(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    document_file = db.Column(db.String(255))
-    date_posted = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-    title = db.Column(db.String(100))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-
 #define Questionnaire table
 class Questionnaire(db.Model):
     id = db.Column(db.Integer, primary_key=True)
