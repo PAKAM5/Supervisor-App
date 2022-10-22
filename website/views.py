@@ -25,7 +25,7 @@ from . import app
 #set up Blueprint
 views = Blueprint('views', __name__)
 
-from .models import db, User, Survey, Files, School, Manager, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
+from .models import Subscription, db, User, Survey, Files, School, Manager, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
 from .forms import ApprovalForm, SurveyForm, EditProfileForm, EditUserForm, AppraisalForm, QueryManager, DeleteUserForm
 
 #define schedule job
@@ -92,6 +92,8 @@ def approval():
 #@login_required
 def profile():
     form = EditProfileForm()
+    #Get subscription for when school is is the same as current user school id
+    subscription = Subscription.query.with_entities(Subscription.expiry_date).filter(Subscription.school_id==current_user.school_id).first()
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
@@ -106,7 +108,7 @@ def profile():
         form.username.data = current_user.name
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template("profile.html" ,image_file=image_file, form = form)
+    return render_template("profile.html" ,image_file=image_file, form = form, subscription = subscription)
 
 #define home page 
 @views.route("/")
@@ -116,7 +118,7 @@ def home():
     user = User()
 
     #Get the matching school name from the school table
-    school = School.query.filter_by(id=user.school_id).first()
+    school = School.query.filter_by(id=current_user.school_id).first()
    
     return render_template("home.html", school =school, user = user)
 
@@ -203,7 +205,7 @@ def create_appraisal():
         flash("Your appraisal has been created!", category='success')
         return redirect(url_for('views.saved_reviews'))
 
-    return render_template("create_review.html", lsec=lsec, dsec = dsec,  text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
+    return render_template("create_review.html", lsec=lsec, text = text, review = review, evidence = evidence, comments = comments, action = action, questionnaire = questionnaire, sections = sections, questions = questions, dotpoints = dotpoints)
 
 #Define appraisal form page
 @views.route("/appraisal-form", methods = ['GET','POST'])
@@ -567,7 +569,7 @@ def user_table():
                 elif key[0] == 'manager':
                     user.is_manager = True
                     db.session.commit()
-                    add_manager = Manager(name = user.name, school_id = user.school_id, id = user.id)
+                    add_manager = Manager(manager_id = user.id, employee_id = user.id)
                     db.session.add(add_manager)
                     db.session.commit()
             

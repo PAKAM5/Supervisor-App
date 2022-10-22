@@ -66,7 +66,7 @@ def sign_up():
             new_user = User (school_id = form.school_id.data, name = "Employee", phone = form.phone.data, email = form.email.data, password = form.password.data, first_name = form.first_name.data, last_name = form.last_name.data, is_approved = False )
             db.session.add(new_user)
             db.session.commit()
-            flash ('Your account is pending please wait for approval by Head of Boarding', category = 'error')
+            flash ('Your account is pending please wait for approval by your Head of Boarding', category = 'success')
             return render_template('approval_pending.html')
     return render_template('sign_up.html', form = form)
 
