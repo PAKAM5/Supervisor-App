@@ -25,10 +25,7 @@ class School(db.Model):
     school_name = db.Column(db.String(255))
     user = db.relationship('User', backref='school', lazy=True)
 
-
    
-    
-    
 #define User table
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

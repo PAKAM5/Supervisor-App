@@ -10,6 +10,7 @@
       <div class="media-body">
         <h2 class="account-heading">{{ current_user.username }}</h2>
         <p class="text-secondary">{{ current_user.email }}</p>
+        <p class="text-secondary">{{ current_user.phone }}</p>
         {% if current_user.is_superuser == True %}
         <p class="text-secondary">Administrator</p>
         {% elif current_user.is_manager == True %}
@@ -82,12 +83,10 @@
               <div class = "form-group">
                 <div>
                     {% if current_user.is_authenticated and current_user.is_superuser %}
-                    <a href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
+                    <a class ="text-secondary" href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
                     {% elif current_user.is_authenticated and current_user.is_manager %}
-                    <a href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
-                    {% else %}
-                    <a href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
-                    <img src="{{ url_for('static', filename='web_images/lock.jpg' ) }}" class="rounded-circle article-img" style="height: 25px; width: 25px;" >
+                    <a class ="text-secondary" href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
+                    
                     {% endif %}
                     
                   </div>

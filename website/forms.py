@@ -14,7 +14,7 @@ from .models import User
 
 #Edit profile form
 class EditProfileForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    username = StringField('Username')
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -148,10 +148,11 @@ class QueryManager(FlaskForm):
 
 #Registration Form
 class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    username = StringField('Username')
     first_name = StringField('First Name')
     last_name = StringField('Last Name')
     email = StringField('Email', validators=[DataRequired(), Email()])
+    phone = StringField('Phone')
     school_id = StringField('Input School ID')
     password = PasswordField('Password')
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
@@ -181,14 +182,6 @@ class UploadForm(FlaskForm):
     filename = StringField('Filename')
     submit = SubmitField('Upload')
 
-# #Create a form combining Professional, Supervision, Administration, Team forms
-# class CombinedForm(FlaskForm):
-    # professional = wtforms.FormField(Professional)
-    # supervision = wtforms.FormField(Supervision)
-    # team = wtforms.FormField(Team)
-    # administration = wtforms.FormField(Administration)
-
-
 #EditUser Form
 class EditUserForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
@@ -198,10 +191,3 @@ class EditUserForm(FlaskForm):
     delete = BooleanField('Delete')
     submit = SubmitField('Update')
 
-##Select * from sections where questionionnaire = 1, orderedby section_number (Ascending)
-##HTML -  section_number, section_name
-##Select * questions where questionnaire = 1 and section_number =  questionnaire.section_number orderedby  question_number ascending
-##HTML section_number.question.question_number.question_title.
-##select * from dotpoints where questionnaire = 1
-# and section = questionnaire.section_num
-# and question = current.section.question_number orderedby sequence_number ascending
