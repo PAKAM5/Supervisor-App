@@ -13,7 +13,7 @@
         <p class="text-secondary">{{ current_user.phone }}</p>
         {% if current_user.is_superuser == True %}
         <p class="text-secondary">Administrator</p>
-        <h2 class=> Subscription Expiration Date: {{ subscription.strftime('%Y-%m-%d') }}</h2>
+        <h2 class=> Subscription Expiration Date: {{ subscription}}</h2>
         {% elif current_user.is_manager == True %}
         <p class="text-secondary">Manager</p>
         {% else %}
