@@ -93,7 +93,7 @@ def approval():
 def profile():
     form = EditProfileForm()
     #Get subscription for when school is is the same as current user school id
-    subscription = Subscription.query.with_entities(Subscription.expiry_date).filter(Subscription.school_id==current_user.school_id).first()
+    subscription = Subscription.query.filter(Subscription.school_id==current_user.school_id).first()
     if form.validate_on_submit():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
