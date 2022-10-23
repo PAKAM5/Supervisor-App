@@ -18,17 +18,17 @@
                             {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                             {{lquestions['question_title']}}
                             
-                            <ul class="dp">
+                            <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
                                 {%for d in lquestions['dotpoints']%}
                                     <li>{{d['dotpoint_name']}}</li>
                                 {%endfor%}
                             </ul>
                             <div>
-                             <div class = 'rating'>
+                             <div class = 'rating' style="width: 600px;">
                                 <p>Supervisor's rating = {{lquestions['rating']}}</p>
                             </div>   
-                            <div class = 'comments'>
-                                <p>Supervisor's comments = {{lquestions['comments']}}</p>
+                            <div class = 'comments' style="width: 600px;border-style: solid;" border = "1">
+                                <p>Supervisor's comments: {{lquestions['comments']}}</p>
                             </div>
                             <div class = 'evidence'>
                                 <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="evidences{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>

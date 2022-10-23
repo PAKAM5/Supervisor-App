@@ -193,7 +193,7 @@ class Comments(db.Model):
     section_id = db.Column(db.Integer)
     question_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
-    title = db.Column(db.String(100))
+    title = db.Column(db.String(500))
     date_posted = db.Column(db.Date, default = func.current_date() )
     
    
