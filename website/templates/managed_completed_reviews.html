@@ -14,7 +14,7 @@
           {%if employee['reviews']%}
           {%for r in employee['reviews']%}
             <li>
-              <a href="{{url_for('views.appraisal_form')}}?user={{employee.id}}&date={{r}}">
+              <a href="{{url_for('views.appraisal_display')}}?user={{employee.id}}&date={{r}}">
                 Appraisal {{r}}
               </a>
             </li>
