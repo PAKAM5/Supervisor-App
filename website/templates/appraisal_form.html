@@ -17,17 +17,18 @@
                         <div class = 'questions'>
                             {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                             {{lquestions['question_title']}}
-                            <div class = 'rating'>
-                                rating = {{lquestions['rating']}}
-                            </div>
+                            
                             <ul class="dp">
                                 {%for d in lquestions['dotpoints']%}
                                     <li>{{d['dotpoint_name']}}</li>
                                 {%endfor%}
                             </ul>
                             <div>
+                             <div class = 'rating'>
+                                <p>Supervisor's rating = {{lquestions['rating']}}</p>
+                            </div>   
                             <div class = 'comments'>
-                                comments = {{lquestions['comments']}}
+                                <p>Supervisor's comments = {{lquestions['comments']}}</p>
                             </div>
                             <div class = 'evidence'>
                                 <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="evidences{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
