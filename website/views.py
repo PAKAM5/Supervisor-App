@@ -451,10 +451,13 @@ def about():
 @views.route("/saved-reviews")
 def saved_reviews():
     #select distinct dateposted from Response table where user id is equal to current_user
-
-    #select distinct value from date_posted column from Response table where user id is equal to current_user
+    # Author = {'id': current_user.id, 'name': current_user.first_name + ' ' + current_user.last_name}
+    # Author['reviews'] = []
     rd = Response.query.with_entities(Response.date_posted).filter(Response.user_id == current_user.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
-
+    # for r in rd:
+    #     Author['reviews'].append(r.date_posted)
+    #select distinct value from date_posted column from Response table where user id is equal to current_user
+    
 
     return render_template('saved_reviews.html', rd = rd)
 
