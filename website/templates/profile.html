@@ -17,6 +17,7 @@
         {% elif current_user.is_manager == True %}
         <p class="text-secondary">Manager</p>
         {% else %}
+        <p class="text-secondary">{{subscription.expiry_date}}</p>
         <p class="text-secondary">Supervisor</p>
         {% endif %}
       </div>

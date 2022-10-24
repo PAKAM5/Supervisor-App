@@ -14,32 +14,38 @@
                 <!--Multiple questions list of dictionaires-->
                     <h3>{{l['section_id']}}. &nbsp; {{l['section_title']}}</h3>
                     {%for lquestions in l['questions']%}
-                        <div class = 'questions'>
+                        <div class = 'questions' style="padding-left: 250px;font-weight: bold;">
                             {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                             {{lquestions['question_title']}}
-                            
-                            <ul class="dp">
+                        </div>
+                        <div style="padding-left: 250px;">
+                            <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
                                 {%for d in lquestions['dotpoints']%}
                                     <li>{{d['dotpoint_name']}}</li>
                                 {%endfor%}
                             </ul>
                             <div>
                               <div class = 'rating'>
-                                rating = {{lquestions['rating']}}
+                                rating: {{lquestions['rating']}}
                             </div>  
-                            <div class = 'comments'>
-                                comments = {{lquestions['comments']}}
+                            <div class = 'comments'style="width: 600px;">
+                                comments: {{lquestions['comments']}}
                             </div>
+                            </div>
+                        </div>
+                        <div>
                             {%if lquestions['evidence']%}
-                                <h3>Manager Input</h3>
-                                <div class = 'evidence'>
-                                    Evidence = {{lquestions['evidence']}}
+                            <div> <h3>Manager Input</h3></div>
+                            <div style="padding-left: 250px;">
+                                <div class = 'evidence' style="width: 600px;">
+                                    Evidence: {{lquestions['evidence']}}
                                 </div>
                             {%endif%}
                             {%if lquestions['actions']%}
-                                <div class = 'actions'>
-                                    Actions = {{lquestions['actions']}}
+                                <div class = 'actions' style="width: 600px;">
+                                    Actions: {{lquestions['actions']}}
                                 </div>
+                            </div>
                             {%endif%}
                         </div>
                     {% endfor %}
@@ -49,5 +55,14 @@
         <input type='submit' name='Submit' value='Submit' />
     </form>
 </div>
+<body>
+    <button id="test" style="position:fixed;right:100px;bottom:50px;cursor: pointer;padding: 15px;border-radius: 4px;">TOP</button>
+    
+    <script>
+    　　test.onclick = function(){
+    　　　　document.body.scrollTop = document.documentElement.scrollTop = 0;
+    　　}
+    </script>
+    </body>  
 {% endblock %}
 </div>

@@ -175,7 +175,7 @@ class Action(db.Model):
     question_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     date_posted = db.Column(db.Date, default = func.current_date())
-    title = db.Column(db.String(100))
+    title = db.Column(db.String(500))
     
    
     #make questionnaire, question, section,  sequence   - primary key constraint
@@ -212,7 +212,7 @@ class Evidence(db.Model):
     question_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     date_posted = db.Column(db.Date, default = func.current_date())
-    title = db.Column(db.String(100))
+    title = db.Column(db.String(500))
    
     #make questionnaire, question, section,  sequence   - primary key constraint
     __table_args__ = (db.PrimaryKeyConstraint( 'questionnaire_id', 'section_id', 'question_id', 'date_posted', 'user_id'), db.ForeignKeyConstraint(['questionnaire_id', 'section_id', 'question_id'], ['questions.questionnaire_id', 'questions.section_id', 'questions.id']),
