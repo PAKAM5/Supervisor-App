@@ -14,34 +14,40 @@
                 <!--Multiple questions list of dictionaires-->
                     <h3>{{l['section_id']}}. &nbsp; {{l['section_title']}}</h3>
                     {%for lquestions in l['questions']%}
-                        <div class = 'questions'>
+                        <div class = 'questions' style="padding-left: 250px;">
                             {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                             {{lquestions['question_title']}}
                             
-                            <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
-                                {%for d in lquestions['dotpoints']%}
-                                    <li>{{d['dotpoint_name']}}</li>
-                                {%endfor%}
-                            </ul>
-                            <div>
-                             <div class = 'rating' style="width: 600px;">
-                                <p>Supervisor's rating = {{lquestions['rating']}}</p>
-                            </div>   
-                            <div class = 'comments' style="width: 600px;border-style: solid;" border = "1">
-                                <p>Supervisor's comments: {{lquestions['comments']}}</p>
-                            </div>
-                            <div class = 'evidence'>
-                                <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="evidences{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
-                            </div>
-                            <div class = 'actions'>
-                                <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="actions{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
-                            </div>
+                            
                         </div>
+                    <div style="padding-left: 250px;">
+                        <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
+                            {%for d in lquestions['dotpoints']%}
+                                <li>{{d['dotpoint_name']}}</li>
+                            {%endfor%}
+                        </ul>
+                        <div>
+                         <div class = 'rating' style="width: 600px;">
+                            <p>Supervisor's rating : {{lquestions['rating']}}</p>
+                        </div>   
+                        <div class = 'comments' style="width: 600px;border-style: solid;" border = "1">
+                            <p>Supervisor's comments: {{lquestions['comments']}}</p>
+                        </div>
+                        <div class = 'evidence'>
+                            <textarea placeholder = Evidence id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="evidences{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                        </div>
+                        <div class = 'actions'>
+                            <textarea placeholder = Actions id="s{{l['section_id']}}q{{lquestions['question_id']}}" name="actions{{l['section_id']}}q{{lquestions['question_id']}}" rows="4" cols="50"></textarea>
+                        </div>
+                        </div>  
+                    </div>
                     {% endfor %}
                 {% endfor %}
-            </div>   
+            
         </fieldset>
+        <div align = "center">
         <input type='submit' name='Submit' value='Submit' />
+        </div>  
     </form>
 </div>
 {% endblock %}
