@@ -14,7 +14,7 @@
                 <!--Multiple questions list of dictionaires-->
                     <h3>{{l['section_id']}}. &nbsp; {{l['section_title']}}</h3>
                     {%for lquestions in l['questions']%}
-                        <div class = 'questions' style="padding-left: 250px;">
+                        <div class = 'questions' style="padding-left: 250px;font-weight: bold;">
                             {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                             {{lquestions['question_title']}}
                             
@@ -50,5 +50,14 @@
         </div>  
     </form>
 </div>
+<body>
+    <button id="test" style="position:fixed;right:100px;bottom:50px;cursor: pointer;padding: 15px;border-radius: 4px;">TOP</button>
+    
+    <script>
+    　　test.onclick = function(){
+    　　　　document.body.scrollTop = document.documentElement.scrollTop = 0;
+    　　}
+    </script>
+    </body>  
 {% endblock %}
 </div>
