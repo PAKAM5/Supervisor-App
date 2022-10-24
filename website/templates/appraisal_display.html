@@ -14,28 +14,32 @@
                 <!--Multiple questions list of dictionaires-->
                     <h3>{{l['section_id']}}. &nbsp; {{l['section_title']}}</h3>
                     {%for lquestions in l['questions']%}
-                        <div class = 'questions'>
+                        <div class = 'questions' style="padding-left: 250px;">
                             {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                             {{lquestions['question_title']}}
-                            <div class = 'rating'>
-                                rating = {{lquestions['rating']}}
-                            </div>
-                            <ul class="dp">
-                                {%for d in lquestions['dotpoints']%}
-                                    <li>{{d['dotpoint_name']}}</li>
-                                {%endfor%}
-                            </ul>
-                            <div>
-                            <div class = 'comments'>
-                                comments = {{lquestions['comments']}}
-                            </div>
-                            <div class = 'evidence'>
-                                evidence = {{lquestions['evidence']}}
-                            </div>
-                            <div class = 'actions'>
-                                actions = {{lquestions['action']}}
-                            </div>
                         </div>
+                    <div style="padding-left: 250px;">
+                        <div class = 'rating'>
+                            rating = {{lquestions['rating']}}
+                        </div>
+                        <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
+                            {%for d in lquestions['dotpoints']%}
+                                <li>{{d['dotpoint_name']}}</li>
+                            {%endfor%}
+                        </ul>
+                        <div>
+                        <div class = 'comments' style="width: 600px;">
+                            comments : {{lquestions['comments']}}
+                        </div>
+                        <div class = 'evidence' style="width: 600px;">
+                            evidence : {{lquestions['evidence']}}
+                        </div>
+                        <div class = 'actions' style="width: 600px;"> 
+                            actions : {{lquestions['action']}}
+                        </div>
+                        </div>
+                    </div>
+
                     {% endfor %}
                 {% endfor %}
             </div>
