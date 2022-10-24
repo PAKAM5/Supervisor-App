@@ -23,32 +23,41 @@
             <td>{{ user.first_name }}</td>
             <td>{{ user.last_name }}</td>
             <td>{{ user.email }}</td>
-            <td><input type="checkbox" id="manager{{user.id}}" name="manager{{user.id}}" value="manager"><br></td>
-            <td><input type="checkbox" id="superuser{{user.id}}" name="superuser{{user.id}}" value="superuser"><br></td>
+            <!--Select field with values yes and no-->
+            <td><select name="manager{{user.id}}">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select></td>
+            <td><select name="superuser{{user.id}}">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select></td>
+
             <!--<td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>-->
             <td><a href="{{url_for('views.delete_user', id = user.id)}}">Remove</a></td>
             
+            <!--{%if user.is_superuser == False %}-->
+            <td><select name = 'mymanager{{user.id}}'>
+                 {%for m in available_managers%}
+                 <!--##mid={{m.id}}  umid={{user.manager_id}}-->
+                 <option value = "none">None</option>
+                 <option value = "{{m.id}}" {%if m.id == user.manager_id %} selected ="selected" {%endif%}>
+                     {{m.first_name}}
+                 </option>
+                 {%endfor%}
+             </select></td>
+             <!--{%endif%}-->
 
-            {%if user.is_superuser == False %}
-           <td><select name = 'mymanager{{user.id}}'>
-                {%for m in available_managers%}
-                <!--##mid={{m.id}}  umid={{user.manager_id}}-->
-                <option value = "{{m.id}}" {%if m.id == user.manager_id %} selected ="selected" {%endif%}>
-                    {{m.name}}
-                </option>
-                {%endfor%}
-            </select></td>
-            {%endif%}
         </tr>
         
-        
-        {% endfor %}
-    </table>    
-</body>
-</div>
-<div>
+        {% endfor %} 
+    </table>
+    <div>
+        <!--submit button--> 
     <input type = "submit" value = "Submit">
    </div>
+</body>
+</div>
 </form>
    
 {%else%}

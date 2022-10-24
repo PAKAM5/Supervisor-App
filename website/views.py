@@ -1,4 +1,5 @@
 #import modules
+from asyncio.windows_events import NULL
 import os.path
 import secrets
 from PIL import Image
@@ -457,7 +458,10 @@ def managed_reviews():
         Employee['reviews'] = []
         # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
         #SELECT DISTINCT response.date_posted FROM response LEFT JOIN evidence ON (evidence.user_id = response.user_id AND evidence.date_posted = response.date_posted) WHERE response.user_id = e.id AND evidence.title IS NULL;
-        rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        rev = Response.query.with_entities(Response.date_posted).join(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).join(Action, Action.date_posted == Response.date_posted and Action.user_id == Response.user_id).filter(Response.user_id == e.id).filter(Evidence.title == NULL).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+       
+         #old one
+        # rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
         for r in rev:
             Employee['reviews'].append(r.date_posted)
         Employees.append(Employee)
@@ -480,7 +484,9 @@ def managed_completed_reviews():
         Employee = {'id': e.id, 'name':name.first_name + " " + name.last_name, }
         Employee['reviews'] = []
         # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
-        rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        rev = Response.query.with_entities(Response.date_posted).join(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).filter(Response.user_id == e.id).filter(Evidence.title == NULL).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        # old one
+        # rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
         for r in rev:
             Employee['reviews'].append(r.date_posted)
         Employees.append(Employee)
@@ -526,6 +532,8 @@ def user_table():
     #Get users from user table that are not current user
     # users = User.query.outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
     users = db.session.query(User.id, User.first_name, User.last_name, User.email, User.is_superuser, Manager.manager_id).select_from(User).outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
+    #Get users with the same school id as current user that are approved and are not managers
+    usrs = User.query.filter_by(school_id = current_user.school_id, is_approved = True).filter(User.id.notin_(db.session.query(Manager.employee_id).filter(Manager.manager_id == current_user.id))).all()
     #Get managers whose school id is the same as current user from the manager table
     available_managers = User.query.filter_by(school_id = current_user.school_id, is_approved = True, is_manager = True).all()
 
@@ -533,27 +541,59 @@ def user_table():
     #get value of name {{user}} from form and assign to variable
     for key, value in request.form.items():
 
+        # id = ""
+        # if key.find('manager') == 0:
+        #     id = key[len('manager')]
+        # elif key.find('superuser') == 0:
+        #     id = key[len('superuser')]
+        # elif id == "":
+        #     continue
 
-        id = ""
-        if key.find('manager') == 0:
-            id = key[len('manager')]
-        elif key.find('superuser') == 0:
-            id = key[len('superuser')]
-        elif id == "":
-            continue
-
-        for user in users:
-            if user.id == id:
-                if key[0] == 's':
+        for user in usrs:
+            if key == "superuser" + str(user.id):
+            # if user.id == id:
+                if value == "yes":
+                # if key[0] == 's':
                     user.is_superuser = True
                     db.session.commit()
-
-                elif key[0] == 'manager':
+                elif value == "no":
+                    user.is_superuser = False
+                    db.session.commit()
+            elif key == "manager" + str(user.id):
+                if value == "yes":
+                # elif key[0] == 'manager':
                     user.is_manager = True
                     db.session.commit()
-                    add_manager = Manager(manager_id = user.id, employee_id = user.id)
-                    db.session.add(add_manager)
+                    #if manager doesn't exist in manager table, add them
+                    if Manager.query.filter_by(manager_id = user.id, employee_id = user.id).first() is None:    
+                        add_manager = Manager(manager_id = user.id, employee_id = user.id)
+                        db.session.add(add_manager)
+                        db.session.commit()
+                elif value == "no":
+                    user.is_manager = False
                     db.session.commit()
+                    #if manager exists in manager table, delete them
+                    if Manager.query.filter_by(manager_id = user.id, employee_id = user.id).first() is not None:
+                        delete_manager = Manager.query.filter_by(manager_id = user.id, employee_id = user.id).first()
+                        db.session.delete(delete_manager)
+                        db.session.commit()
+
+        #Assign managers
+        for u in users:
+            for m in available_managers:
+                if key == "mymanager" + str(m.id):
+                    if value == "yes":
+                        #if manager doesn't exist in manager table, add them
+                        if Manager.query.filter_by(manager_id = m.id, employee_id = u.id).first() is None:    
+                            add_manager = Manager(manager_id = m.id, employee_id = u.id)
+                            db.session.add(add_manager)
+                            db.session.commit()
+                    elif value == "no":
+                        #if manager exists in manager table, delete them
+                        if Manager.query.filter_by(manager_id = m.id, employee_id = u.id).first() is not None:
+                            delete_manager = Manager.query.filter_by(manager_id = m.id, employee_id = u.id).first()
+                            db.session.delete(delete_manager)
+                            db.session.commit()
             
     return render_template("table.html", users = users, available_managers = available_managers)
 
