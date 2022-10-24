@@ -15,7 +15,7 @@
               <a class="mr-2" href="#"></a>
               <small class="text-muted">{{ r.date_posted.strftime('%Y-%m-%d') }}</small>
             </div>
-            <h2><a class="article-title" href="{{ url_for('views.create_appraisal') }}">Appraisal {{ r.date_posted.strftime('%Y-%m-%d') }}</a></h2>
+            <h2><a class="article-title" href="{{ url_for('views.user_appraisal_display') }}?date={{r.date_posted}}">Appraisal {{ r.date_posted.strftime('%Y-%m-%d') }}</a></h2>
             <p class="article-content"> <ul>
               <li>{{r.date_posted}}</li>
             </ul>

@@ -100,6 +100,8 @@ def profile():
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
         current_user.name = form.username.data
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
         current_user.email = form.email.data
         current_user.licence = form.licence.data
         db.session.commit()
@@ -366,10 +368,13 @@ def appraisal_display():
 @views.route("/user-appraisal-display", methods = ['GET','POST'])
 #@login_required
 def user_appraisal_display():
-    
-    #get the first query from the questionnaire table
+    #Select Rating, Comment.title AS COMM, evidence.title AS EVID, action.title AS ACT from Response INNER JOIN COMMENT ON (Comment.user_id = Response.user_id AND Comment.date_posted = Response.date_posted) LEFT JOIN Evidence ON (Evidence.user_id = Response.user_id AND Evidence.date_posted = Response.date_posted) LEFT JOIN ACTION ON (Action.user_id = Response.user_id and Action.date_posted = Response.date_posted and Action.questionnaire_id = Response.questionnaire_id and Action.sec_id = Response.sec_id and Action.question_id = Response.question_id) WHERE Response.user_id = current_user.id AND Response.date_posted = #query string(request.args('date)) ORDERBY Response.sec_id asc, Response.quesion_id asc
+
+    red = Response.query.filter_by(user_id =current_user.id, date_posted = request.args['date']).join(Comments, Comments.user_id == Response.user_id and Comments.date_posted == Response.date_posted and Comments.questionnaire_id == Response.questionnaire_id and Comments.section_id == Response.section_id and Comments.question_id == Response.question_id).outerjoin(Evidence, Evidence.user_id == Response.user_id, Evidence.date_posted == Response.date_posted, Evidence.questionnaire_id == Response.questionnaire_id, Evidence.section_id == Response.section_id, Evidence.question_id ==Response.question_id).outerjoin(Action, Action.user_id == Response.user_id, Action.date_posted == Response.date_posted, Action.questionnaire_id == Response.questionnaire_id, Action.section_id == Response.section_id, Action.question_id == Response.question_id).order_by(asc(Response.section_id), asc(Response.question_id))
+
+    # get the first query from the questionnaire table
     questionnaire = Questionnaire.query.filter_by(id=1).first()
-    #Create empty list for sections
+    #Crdbeate empty list for sections
     lsec = []
     #Create empty dictionary for sections
     #Filter the sections table where the questionnaire id is equal to the questionnaire id
@@ -380,7 +385,6 @@ def user_appraisal_display():
         dsec = {'section_id': sec.id, 'section_title': sec.title}
         dsec['questions'] = []
 
-        #dsec = {section.id:section.id, section.title: section.title}
         #Filter the questions table where the questionnaire id is equal to the questionnaire id and section id is equal to the section id
         questions = Questions.query.filter_by(questionnaire_id = 1, section_id = sec.id).all()
         
@@ -389,12 +393,16 @@ def user_appraisal_display():
             dques = {'question_id': ques.id, 'question_title': ques.title}
             dques['dotpoints'] = []
             #Get query for completed rating and comments in response table
-            rate = Response.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =request.args['user'], date_posted = request.args['date'] ).first()
-            comm = Comments.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =request.args['user'], date_posted = request.args['date'] ).first()
-            evi  = Evidence.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =request.args['user'], date_posted = request.args['date'] ).first()
-            act  = Action.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =request.args['user'], date_posted = request.args['date'] ).first() 
+            rate = Response.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =current_user.id, date_posted = request.args['date'] ).first()
+            comm = Comments.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =current_user.id, date_posted = request.args['date'] ).first()
+            evi  = Evidence.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =current_user.id, date_posted = request.args['date'] ).first()
+            act  = Action.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =current_user.id, date_posted = request.args['date'] ).first() 
             dques['rating'] = rate.rating
             dques['comments'] = comm.title
+            # if len(evi) == 1:
+            dques['evidence'] = evi.title
+            # if len(act) == 1:
+            dques['actions'] = act.title
             #Filter the dotpoints table where the questionnaire id is equal to the questionnaire id, section is is section id  and question id is equal to the question id
             dotpoints = Dotpoints.query.filter_by(questionnaire_id = 1, section_id = sec.id, question_id = ques.id).all()
             #Create a dictionary with dotpoint id key and dotpoint name key
@@ -406,35 +414,8 @@ def user_appraisal_display():
             dsec['questions'].append(dques)
         #Append section dictionary to list (list for multiple sections)
         lsec.append(dsec)
-
-
-
-                
-    # review = ""
-    # evidence = ""
-    # comments = ""
-    # action = ""
-    # text = ""
-
-    # if request.method == 'POST':
-    #     # review = Response(title = form.choices.data 
-    #      #Insert values into table response from Question table
-    
-    #     for key, value in request.form.items():
-    #         if key.find('evidences') == 0:
-    #             name = 'evidences'
-    #         elif key.find('actions') == 0:
-    #             name = 'actions'
-    #         else:
-    #             continue
-    #         if key.find('q') == '-1':
-    #             continue
-    #         section_num = key[len(name):key.find('q')]
-    #         question_num = key[key.find('q') + 1:]
-            
-    #     flash("Your appraisal has been updated!", category='success')
-    #     return redirect(url_for('views.managed_reviews'))
-    return render_template('user_appraisal_display.html', lsec = lsec, questionnaire = questionnaire) 
+   
+    return render_template('user_appraisal_display.html', lsec = lsec, questionnaire = questionnaire, red = red) 
 
 #define single appraisal page
 @views.route("/appraisal/<int:review_id>")
@@ -450,13 +431,8 @@ def about():
 # #define saved reviews page 
 @views.route("/saved-reviews")
 def saved_reviews():
-    #select distinct dateposted from Response table where user id is equal to current_user
-    # Author = {'id': current_user.id, 'name': current_user.first_name + ' ' + current_user.last_name}
-    # Author['reviews'] = []
+    #Select Rating, Comment.title AS COMM, evidence.title AS EVID, action.title AS ACT from Response INNER JOIN COMMENT ON (Comment.user_id = Response.user_id AND Comment.date_posted = Response.date_posted) LEFT JOIN Evidence ON (Evidence.user_id = Response.user_id AND Evidence.date_posted = Response.date_posted) LEFT JOIN ACTION ON (Action.user_id = Response.user_id and Action.date_posted = Response.date_posted and Action.questionnaire_id = Response.questionnaire_id and Action.sec_id = Response.sec_id and Action.question_id = Response.question_id) WHERE Response.user_id = current_user.id AND Response.date_posted = #query string(request.args('date)) ORDERBY Response.sec_id asc, Response.quesion_id asc
     rd = Response.query.with_entities(Response.date_posted).filter(Response.user_id == current_user.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
-    # for r in rd:
-    #     Author['reviews'].append(r.date_posted)
-    #select distinct value from date_posted column from Response table where user id is equal to current_user
     
 
     return render_template('saved_reviews.html', rd = rd)
@@ -466,6 +442,7 @@ def saved_reviews():
 @views.route("/managed-reviews")
 def managed_reviews():
     if current_user.is_superuser:
+        #Select user.id, DISTINCT response.date_posted FROM user LEFT JOIN response ON response.employee_id =user.id WHERE user.school_id = CURRENT_USER.school_id AND 0 IN (SELECT COUNT (*)) FROM evidence WHERE user_id = user.id AND evidence.date_posted = response.date_posted);
         #get reviews where school id is equal to current user school id
         emps =  User.query.with_entities(User.id).filter(User.school_id == current_user.school_id).all()
     elif current_user.is_manager:
@@ -479,6 +456,7 @@ def managed_reviews():
         Employee = {'id': e.id, 'name':name.first_name + " " + name.last_name, }
         Employee['reviews'] = []
         # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
+        #SELECT DISTINCT response.date_posted FROM response LEFT JOIN evidence ON (evidence.user_id = response.user_id AND evidence.date_posted = response.date_posted) WHERE response.user_id = 2 AND evidence.title IS NULL;
         rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
         for r in rev:
             Employee['reviews'].append(r.date_posted)

@@ -17,22 +17,30 @@
                         <div class = 'questions'>
                             {{l['section_id']}}.{{lquestions['question_id']}}. &nbsp;
                             {{lquestions['question_title']}}
-                            <div class = 'rating'>
-                                rating = {{lquestions['rating']}}
-                            </div>
+                            
                             <ul class="dp">
                                 {%for d in lquestions['dotpoints']%}
                                     <li>{{d['dotpoint_name']}}</li>
                                 {%endfor%}
                             </ul>
                             <div>
+                              <div class = 'rating'>
+                                rating = {{lquestions['rating']}}
+                            </div>  
                             <div class = 'comments'>
                                 comments = {{lquestions['comments']}}
                             </div>
-                            <div class = 'evidence'>
-                            </div>
-                            <div class = 'actions'>
-                            </div>
+                            {%if lquestions['evidence']%}
+                                <h3>Manager Input</h3>
+                                <div class = 'evidence'>
+                                    Evidence = {{lquestions['evidence']}}
+                                </div>
+                            {%endif%}
+                            {%if lquestions['actions']%}
+                                <div class = 'actions'>
+                                    Actions = {{lquestions['actions']}}
+                                </div>
+                            {%endif%}
                         </div>
                     {% endfor %}
                 {% endfor %}
