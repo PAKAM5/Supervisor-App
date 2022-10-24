@@ -456,7 +456,7 @@ def managed_reviews():
         Employee = {'id': e.id, 'name':name.first_name + " " + name.last_name, }
         Employee['reviews'] = []
         # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
-        #SELECT DISTINCT response.date_posted FROM response LEFT JOIN evidence ON (evidence.user_id = response.user_id AND evidence.date_posted = response.date_posted) WHERE response.user_id = 2 AND evidence.title IS NULL;
+        #SELECT DISTINCT response.date_posted FROM response LEFT JOIN evidence ON (evidence.user_id = response.user_id AND evidence.date_posted = response.date_posted) WHERE response.user_id = e.id AND evidence.title IS NULL;
         rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
         for r in rev:
             Employee['reviews'].append(r.date_posted)
