@@ -25,12 +25,12 @@
             <td>{{ user.email }}</td>
             <!--Select field with values yes and no-->
             <td><select name="manager{{user.id}}">
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
+            <option value="no"{%if not user.is_manager%} selected="selected"{%endif%}>No</option>
+            <option value="yes"{%if user.is_manager%} selected="selected"{%endif%}>Yes</option>
             </select></td>
             <td><select name="superuser{{user.id}}">
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
+                <option value="no"{%if not user.is_superuser%} selected="selected"{%endif%}>No</option>
+                <option value="yes"{%if user.is_superuser%} selected="selected"{%endif%}>Yes</option>
             </select></td>
 
             <!--<td><a href="{{ url_for('views.edit_user', id=user.id) }}">Edit</a></td>-->
@@ -38,11 +38,11 @@
             
             <!--{%if user.is_superuser == False %}-->
             <td><select name = 'mymanager{{user.id}}'>
+                <option value = "none">None</option>
                  {%for m in available_managers%}
                  <!--##mid={{m.id}}  umid={{user.manager_id}}-->
-                 <option value = "none">None</option>
                  <option value = "{{m.id}}" {%if m.id == user.manager_id %} selected ="selected" {%endif%}>
-                     {{m.first_name}}
+                     {{m.first_name}} {{m.last_name}}
                  </option>
                  {%endfor%}
              </select></td>
@@ -57,7 +57,6 @@
     <input type = "submit" value = "Submit">
    </div>
 </body>
-</div>
 </form>
    
 {%else%}

@@ -16,7 +16,7 @@ from datetime import datetime, time, date, timedelta, timezone
 #from send_email import send_email
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.date import DateTrigger
-from sqlalchemy import asc
+from sqlalchemy import asc, or_
 from . import app
 
 
@@ -457,7 +457,7 @@ def managed_reviews():
         Employee['reviews'] = []
         # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
         #SELECT DISTINCT response.date_posted FROM response LEFT JOIN evidence ON (evidence.user_id = response.user_id AND evidence.date_posted = response.date_posted) WHERE response.user_id = e.id AND evidence.title IS NULL;
-        rev = Response.query.with_entities(Response.date_posted).join(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).filter(Response.user_id == e.id).filter( Evidence.title == NULL).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        rev = Response.query.with_entities(Response.date_posted).join(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).filter(Response.user_id == e.id).filter( Evidence.title == None).distinct(Response.date_posted).order_by(asc(Response.date_posted))
        
          #old one
         # rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
@@ -483,7 +483,7 @@ def managed_completed_reviews():
         Employee = {'id': e.id, 'name':name.first_name + " " + name.last_name, }
         Employee['reviews'] = []
         # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
-        rev = Response.query.with_entities(Response.date_posted).join(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).join(Action, Action.date_posted == Response.date_posted and Action.user_id == Action.date_posted).filter(Response.user_id == e.id).filter(Evidence.title == NULL and Action.title == NULL).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        rev = Response.query.with_entities(Response.date_posted).join(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).join(Action, Action.date_posted == Response.date_posted and Action.user_id == Action.date_posted).filter(Response.user_id == e.id).filter(or_(Evidence.title != None, Action.title != None)).distinct(Response.date_posted).order_by(asc(Response.date_posted))
         # old one
         # rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
         for r in rev:
@@ -530,7 +530,7 @@ def user_table():
     # userspre = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
     #Get users from user table that are not current user
     # users = User.query.outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
-    users = db.session.query(User.id, User.first_name, User.last_name, User.email, User.is_superuser, Manager.manager_id).select_from(User).outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
+    users = db.session.query(User.id, User.first_name, User.last_name, User.email, User.is_manager, User.is_superuser, Manager.manager_id).select_from(User).outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
     #Get users with the same school id as current user that are approved and are not managers
     usrs = User.query.filter_by(school_id = current_user.school_id, is_approved = True).filter(User.id.notin_(db.session.query(Manager.employee_id).filter(Manager.manager_id == current_user.id))).all()
     #Get managers whose school id is the same as current user from the manager table
