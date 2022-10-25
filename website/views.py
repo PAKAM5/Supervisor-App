@@ -1,5 +1,4 @@
 #import modules
-from asyncio.windows_events import NULL
 import os.path
 import secrets
 from PIL import Image
