@@ -12,12 +12,12 @@
         <p class="text-secondary">{{ current_user.email }}</p>
         <!--<p class="text-secondary">{{ current_user.phone }}</p>-->
         {% if current_user.is_superuser == True %}
+        <p class="text-secondary">Expiry date:{{subscription.expiry_date}}</p>
         <p class="text-secondary">Administrator</p>
         <h2 class=> </h2>
         {% elif current_user.is_manager == True %}
         <p class="text-secondary">Manager</p>
         {% else %}
-        <p class="text-secondary">{{subscription.expiry_date}}</p>
         <p class="text-secondary">Supervisor</p>
         {% endif %}
       </div>
