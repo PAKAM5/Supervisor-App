@@ -99,10 +99,12 @@ def profile():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-        current_user.name = form.username.data
-        current_user.first_name = form.first_name.data
+        
+        # current_user.first_name = form.first_name.data
+        form.first_name.data = current_user.first_name 
         current_user.last_name = form.last_name.data
         current_user.email = form.email.data
+        current_user.name = form.username.data
         current_user.licence = form.licence.data
         db.session.commit()
         flash("Your account has been updated!", category='success')
@@ -457,7 +459,7 @@ def managed_reviews():
         Employee['reviews'] = []
         # rev = SELECT distict date.posted FROM Response WHERE user.id = e.employee
         #SELECT DISTINCT response.date_posted FROM response LEFT JOIN evidence ON (evidence.user_id = response.user_id AND evidence.date_posted = response.date_posted) WHERE response.user_id = e.id AND evidence.title IS NULL;
-        rev = Response.query.with_entities(Response.date_posted).join(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).filter(Response.user_id == e.id).filter( Evidence.title != None).distinct(Response.date_posted).order_by(asc(Response.date_posted))
+        rev = Response.query.with_entities(Response.date_posted).outerjoin(Evidence, Evidence.date_posted == Response.date_posted and Evidence.user_id == Response.user_id).filter(Response.user_id == e.id).filter(Evidence.title == None).distinct(Response.date_posted).order_by(asc(Response.date_posted))
        
          #old one
         # rev = Response.query.with_entities(Response.date_posted).filter(Response.user_id == e.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))

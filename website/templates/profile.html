@@ -13,11 +13,11 @@
         <!--<p class="text-secondary">{{ current_user.phone }}</p>-->
         {% if current_user.is_superuser == True %}
         <p class="text-secondary">Administrator</p>
+        <p class="text-secondary">{{subscription.expiry_date}}</p>
         <h2 class=> </h2>
         {% elif current_user.is_manager == True %}
         <p class="text-secondary">Manager</p>
         {% else %}
-        <p class="text-secondary">{{subscription.expiry_date}}</p>
         <p class="text-secondary">Supervisor</p>
         {% endif %}
       </div>
@@ -27,15 +27,14 @@
           {{form.csrf_token}}
           <fieldset class="form-group">
               <legend class="border-bottom mb-4">Profile Information</legend>
-              <div class="form-group">
-                  {{ form.first_name.label(class="form-control-label") }}
-                  {{ form.first_name(class="form-control form-control-lg") }}
-                  
-              </div>
-              <div class="form-group">
-                {{ form.last_name.label(class="form-control-label") }}
-                {{ form.last_name(class="form-control form-control-lg") }} 
-            </div>
+                <div class="form-group">
+                    {{ form.first_name.label(class="form-control-label") }}
+                    {{ form.first_name(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.last_name.label(class="form-control-label") }}
+                    {{ form.last_name(class="form-control form-control-lg") }} 
+                </div>
               <div class="form-group">
                   {{ form.email.label(class="form-control-label") }}
                   {% if form.email.errors %}
@@ -49,20 +48,6 @@
                       {{ form.email(class="form-control form-control-lg") }}
                   {% endif %}
               </div>
-              <!--<div class="form-group">
-                {{ form.licence.label(class="form-control-label") }}
-
-                {% if form.licence.errors %}
-                    {{ form.licence(class="form-control form-control-lg is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.licence.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.licence(class="form-control form-control-lg") }}
-                {% endif %}
-            </div>-->
               <div class="form-group">
                   {{ form.picture.label() }}
                   {{ form.picture(class="form-control-file") }}
