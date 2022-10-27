@@ -784,3 +784,7 @@ span{
 ul.dp li::marker{
   content: normal;
 }
+
+.pname{
+  font-size: 150%;
+}

@@ -525,74 +525,69 @@ def user_table():
     form = EditUserForm()
     row = []
     managerform =  QueryManager()
-    #get users from user table that are approved and have the same school id as current user but are not superuser
-    # userspre = User.query.filter_by(is_approved = True, school_id = current_user.school_id).all()
-    #Get users from user table that are not current user
-    # users = User.query.outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
-    users = db.session.query(User.id, User.first_name, User.last_name, User.email, User.is_manager, User.is_superuser, Manager.manager_id).select_from(User).outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
-    #Get users with the same school id as current user that are approved and are not managers
-    usrs = User.query.filter_by(school_id = current_user.school_id, is_approved = True).filter(User.id.notin_(db.session.query(Manager.employee_id).filter(Manager.manager_id == current_user.id))).all()
-    #Get managers whose school id is the same as current user from the manager table
-    available_managers = User.query.filter_by(school_id = current_user.school_id, is_approved = True, is_manager = True).all()
+    
+   
 
     #Assign roles
     #get value of name {{user}} from form and assign to variable
     for key, value in request.form.items():
 
-        # id = ""
-        # if key.find('manager') == 0:
-        #     id = key[len('manager')]
-        # elif key.find('superuser') == 0:
-        #     id = key[len('superuser')]
-        # elif id == "":
-        #     continue
+        id = ""
+        if key.find('mymanager') == 0:
+            id = key[len('mymanager')]
+        elif key.find('manager') == 0:
+            id = key[len('manager')]
+        elif key.find('superuser') == 0:
+            id = key[len('superuser')]
+        elif id == "":
+            continue
 
-        for user in usrs:
-            if key == "superuser" + str(user.id):
-            # if user.id == id:
-                if value == "yes":
-                # if key[0] == 's':
-                    user.is_superuser = True
-                    db.session.commit()
-                elif value == "no":
-                    user.is_superuser = False
-                    db.session.commit()
-            elif key == "manager" + str(user.id):
-                if value == "yes":
-                # elif key[0] == 'manager':
-                    user.is_manager = True
-                    db.session.commit()
-                    #if manager doesn't exist in manager table, add them
-                    if Manager.query.filter_by(manager_id = user.id, employee_id = user.id).first() is None:    
-                        add_manager = Manager(manager_id = user.id, employee_id = user.id)
-                        db.session.add(add_manager)
-                        db.session.commit()
-                elif value == "no":
-                    user.is_manager = False
-                    db.session.commit()
-                    #if manager exists in manager table, delete them
-                    if Manager.query.filter_by(manager_id = user.id, employee_id = user.id).first() is not None:
-                        delete_manager = Manager.query.filter_by(manager_id = user.id, employee_id = user.id).first()
-                        db.session.delete(delete_manager)
-                        db.session.commit()
+        uu = User.query.filter_by(school_id = current_user.school_id, is_approved = True, id = id).first()
+        if (uu == None):
+            continue
 
+       
+        if key.find('superuser') == 0:
+            if value == "yes" and uu.is_superuser == False:
+                uu.is_superuser = True
+                db.session.commit()
+            elif value == "no" and uu.is_superuser == True:
+                uu.is_superuser = False
+                db.session.commit()
+            continue
+        elif key.find('manager') == 0:
+            if value == "yes" and uu.is_manager == False:
+                uu.is_manager = True
+                db.session.commit()
+            elif value == "no" and uu.is_manager == True:
+                uu.is_manager = False
+                db.session.commit()
+            continue
+                    
         #Assign managers
-        for u in users:
-            for m in available_managers:
-                if key == "mymanager" + str(m.id):
-                    if value == "yes":
-                        #if manager doesn't exist in manager table, add them
-                        if Manager.query.filter_by(manager_id = m.id, employee_id = u.id).first() is None:    
-                            add_manager = Manager(manager_id = m.id, employee_id = u.id)
-                            db.session.add(add_manager)
-                            db.session.commit()
-                    elif value == "no":
-                        #if manager exists in manager table, delete them
-                        if Manager.query.filter_by(manager_id = m.id, employee_id = u.id).first() is not None:
-                            delete_manager = Manager.query.filter_by(manager_id = m.id, employee_id = u.id).first()
-                            db.session.delete(delete_manager)
-                            db.session.commit()
-            
+        myman = Manager.query.filter_by(employee_id = id).first()
+        if value == 'none':
+            if myman != None:
+                db.session.delete(myman)
+                db.session.commit()
+            continue
+        if myman != None and value == myman.manager_id:
+            continue
+        validman = User.query.filter_by(id = value, school_id = current_user.school_id, is_approved = True, is_manager = True).first()
+        if validman == None:
+            continue
+        if myman == None:
+            m = Manager(employee_id = id, manager_id = value)
+            db.session.add(m)
+        else:
+            myman.manager_id = value
+        db.session.commit()
+
+    # users = User.query.outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
+    users = db.session.query(User.id, User.first_name, User.last_name, User.email, User.is_manager, User.is_superuser, Manager.manager_id).select_from(User).outerjoin(Manager, Manager.employee_id == User.id).filter(User.id != current_user.id).filter(User.school_id == current_user.school_id, User.is_approved == True).all()
+   
+    #Get managers whose school id is the same as current user from the manager table
+    available_managers = User.query.filter_by(school_id = current_user.school_id, is_approved = True, is_manager = True).all()
     return render_template("table.html", users = users, available_managers = available_managers)
 
 
