@@ -19,32 +19,36 @@
                             {{lquestions['question_title']}}
                         </div>
                         <div style="padding-left: 250px;">
-                            <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
+                            <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;padding-left: 5px;" border = "1">
                                 {%for d in lquestions['dotpoints']%}
                                     <li>{{d['dotpoint_name']}}</li>
                                 {%endfor%}
                             </ul>
-                            <div>
-                              <div class = 'rating'>
+                            <div style="width: 600px;border-style: dashed;border-width: thin;" border = '1'>
+                              <div class = 'rating' style="padding-left: 250px;">
                                 Rating: {{lquestions['rating']}}
                             </div>  
-                            <div class = 'comments'style="width: 600px;">
+                            <div class = 'comments'style="width: 600px;margin: 5px;">
                                 Comments: {{lquestions['comments']}}
+                            </div>
                             </div>
                             </div>
                         </div>
                         <div>
                             {%if lquestions['evidence']%}
+                            <div>
                             <div> <h3>Manager Input</h3></div>
                             <div style="padding-left: 250px;">
-                                <div class = 'evidence' style="width: 600px;">
+                            <div style="border-style: solid;width: 600px;" border = '1'>
+                                <div class = 'evidence'style="margin: 5px;">
                                     Evidence: {{lquestions['evidence']}}
                                 </div>
                             {%endif%}
                             {%if lquestions['actions']%}
-                                <div class = 'actions' style="width: 600px;">
+                                <div class = 'actions' style="margin: 5px;">
                                     Actions: {{lquestions['actions']}}
                                 </div>
+                            </div>
                             </div>
                             {%endif%}
                         </div>

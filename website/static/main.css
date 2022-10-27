@@ -451,7 +451,7 @@ ul li::marker{
   content: ' ';
 }
 ul.dp li::marker {
-  content: '•'
+  content: ' •'
 }
 
 .steps{
@@ -782,7 +782,8 @@ span{
 }*/
 
 ul.dp li::marker{
-  content: normal;
+  content: ' •';
+  padding-left: 5px;
 }
 
 .pname{

@@ -31,8 +31,10 @@
                     <a>5<input id = "responses{{l['section_id']}}q{{lquestions['question_id']}}" name ="responses{{l['section_id']}}q{{lquestions['question_id']}}" type = 'radio' value = '5'/></a>
                  </div> 
                 <div style="padding-left: 250px;">
-                 <ul class="dp" style= "width: 600px; border-style: double; list-style: inside;">{%for d in lquestions['dotpoints']%}
+                 <ul class="dp" style= "width: 600px; border-style: double; list-style: inside;padding-left: 5px;">{%for d in lquestions['dotpoints']%}
+                    <div style="margin: 5px;">
                     <li>{{d['dotpoint_name']}}</li>
+                    </div>
                  {%endfor%}</ul>
                 </div>  
                 <div>

@@ -21,9 +21,11 @@
                             
                         </div>
                     <div style="padding-left: 250px;">
-                        <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
+                        <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;padding-left: 5px;" border = "1">
                             {%for d in lquestions['dotpoints']%}
+                            <div style="margin: 5px;">
                                 <li>{{d['dotpoint_name']}}</li>
+                            </div>
                             {%endfor%}
                         </ul>
                         <div>

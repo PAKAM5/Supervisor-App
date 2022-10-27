@@ -19,22 +19,24 @@
                             {{lquestions['question_title']}}
                         </div>
                     <div style="padding-left: 250px;">
-                        <div class = 'rating'>
+                        <div class = 'rating' style="padding-left: 250px;">
                             Rating: {{lquestions['rating']}}
                         </div>
-                        <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;" border = "1">
+                        <ul class="dp" style="border-style: solid; list-style: inside; width: 600px; border-width: thin;padding-left: 5px;" border = "1">
                             {%for d in lquestions['dotpoints']%}
+                            <div style="margin: 5px;">
                                 <li>{{d['dotpoint_name']}}</li>
+                                </div>
                             {%endfor%}
                         </ul>
-                        <div>
-                        <div class = 'comments' style="width: 600px;">
+                        <div style="width: 600px;border-style: solid;" border = '1'>
+                        <div class = 'comments' style="width: 600px;margin: 5px;">
                             Comments: {{lquestions['comments']}}
                         </div>
-                        <div class = 'evidence' style="width: 600px;">
+                        <div class = 'evidence' style="width: 600px;margin: 5px;">
                             Evidence: {{lquestions['evidence']}}
                         </div>
-                        <div class = 'actions' style="width: 600px;"> 
+                        <div class = 'actions' style="width: 600px;margin: 5px;"> 
                             Actions: {{lquestions['action']}}
                         </div>
                         </div>
