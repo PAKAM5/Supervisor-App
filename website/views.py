@@ -99,9 +99,7 @@ def profile():
         if form.picture.data:
             picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
-        
-        # current_user.first_name = form.first_name.data
-        form.first_name.data = current_user.first_name 
+        current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
         current_user.email = form.email.data
         current_user.name = form.username.data
@@ -401,10 +399,10 @@ def user_appraisal_display():
             act  = Action.query.filter_by(questionnaire_id = 1, section_id =sec.id, question_id =ques.id, user_id =current_user.id, date_posted = request.args['date'] ).first() 
             dques['rating'] = rate.rating
             dques['comments'] = comm.title
-            # if len(evi) == 1:
-            dques['evidence'] = evi.title
-            # if len(act) == 1:
-            dques['actions'] = act.title
+            if evi != None:
+                dques['evidence'] = evi.title
+            if act != None:
+                dques['actions'] = act.title
             #Filter the dotpoints table where the questionnaire id is equal to the questionnaire id, section is is section id  and question id is equal to the question id
             dotpoints = Dotpoints.query.filter_by(questionnaire_id = 1, section_id = sec.id, question_id = ques.id).all()
             #Create a dictionary with dotpoint id key and dotpoint name key
@@ -436,7 +434,6 @@ def saved_reviews():
     #Select Rating, Comment.title AS COMM, evidence.title AS EVID, action.title AS ACT from Response INNER JOIN COMMENT ON (Comment.user_id = Response.user_id AND Comment.date_posted = Response.date_posted) LEFT JOIN Evidence ON (Evidence.user_id = Response.user_id AND Evidence.date_posted = Response.date_posted) LEFT JOIN ACTION ON (Action.user_id = Response.user_id and Action.date_posted = Response.date_posted and Action.questionnaire_id = Response.questionnaire_id and Action.sec_id = Response.sec_id and Action.question_id = Response.question_id) WHERE Response.user_id = current_user.id AND Response.date_posted = #query string(request.args('date)) ORDERBY Response.sec_id asc, Response.quesion_id asc
     rd = Response.query.with_entities(Response.date_posted).filter(Response.user_id == current_user.id).distinct(Response.date_posted).order_by(asc(Response.date_posted))
     
-
     return render_template('saved_reviews.html', rd = rd)
 
 
