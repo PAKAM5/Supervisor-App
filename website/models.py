@@ -73,21 +73,21 @@ class Subscription(db.Model):
     expiry_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
 
 
-#Define survey table * Remember to remove this
-class Survey(db.Model):
+# #Define survey table * Remember to remove this
+# class Survey(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    manager_id = db.Column(db.Integer)
-    date_posted = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
-    title = db.Column(db.String(100))
-    document_file = db.Column(db.String(255))
+#     id = db.Column(db.Integer, primary_key=True)
+#     user_id = db.Column(db.Integer)
+#     manager_id = db.Column(db.Integer)
+#     date_posted = db.Column(db.DateTime(timezone=True), default=datetime.utcnow)
+#     title = db.Column(db.String(100))
+#     document_file = db.Column(db.String(255))
 
-    #Foreign constraint of user id and manager id in the user table
-    ForeignKeyConstraint( ['user_id', 'manager_id'], ['user.id', 'user.manager_id'] )
+#     #Foreign constraint of user id and manager id in the user table
+#     ForeignKeyConstraint( ['user_id', 'manager_id'], ['user.id', 'user.manager_id'] )
 
-    def __repr__(self):
-        return f"Survey('{self.title}', '{self.date_posted}')"
+#     def __repr__(self):
+#         return f"Survey('{self.title}', '{self.date_posted}')"
 
     
 #define Questionnaire table

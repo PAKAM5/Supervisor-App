@@ -25,7 +25,7 @@ from . import app
 #set up Blueprint
 views = Blueprint('views', __name__)
 
-from .models import Subscription, db, User, Survey, Files, School, Manager, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
+from .models import Subscription, db, User, Files, School, Manager, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
 from .forms import ApprovalForm, SurveyForm, EditProfileForm, EditUserForm, AppraisalForm, QueryManager, DeleteUserForm
 
 #define schedule job
@@ -215,8 +215,6 @@ def create_appraisal():
 #@login_required
 def appraisal_form():
     form = AppraisalForm()
-    survey = Survey()
-    
     #get the first query from the questionnaire table
     questionnaire = Questionnaire.query.filter_by(id=1).first()
     #Create empty list for sections
@@ -417,11 +415,6 @@ def user_appraisal_display():
    
     return render_template('user_appraisal_display.html', lsec = lsec, questionnaire = questionnaire, red = red) 
 
-#define single appraisal page
-@views.route("/appraisal/<int:review_id>")
-def appraisal(review_id):
-    review = Survey.query.get_or_404(review_id)
-    return render_template("appraisal.html", title = review.title, review = review)
 
 #Define about page
 @views.route("/about")
@@ -637,8 +630,6 @@ def select_manager():
     users = [user for user in users if user.id != current_user.id]
     #get managers from manager table
     managers = Manager.query.all()
-    #get reviews from survey table
-    reviews = Survey.query.all()
     #if form is submitted
     if request.method == "POST" and form.validate():
         #get manager id from form

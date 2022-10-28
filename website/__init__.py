@@ -29,7 +29,7 @@ bcrypt = Bcrypt(app)
 views = Blueprint('views', __name__)
 mail = Mail(app)
 
-from .models import  User, Files, Survey, Subscription, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
+from .models import  User, Files, Subscription, Questionnaire, Sections, Questions, Dotpoints, Response, Action, Comments, Evidence
 from .forms import UploadForm, EditProfileForm
 from . import mail
 
