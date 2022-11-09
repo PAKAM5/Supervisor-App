@@ -5,7 +5,8 @@
 
 {% block content %} <!--<h1>Profile Page</h1>-->
 <div class="content-section" style="padding-top: 50px;">
-    <div class="card">
+    <h2>Profile Information</h2>
+    <div class="card" style="margin-top:50px">
       <img class="rounded-circle account-img" src="{{ image_file }}" style="margin-left:75px;">
       <div class="media-body">
         <h2 class="account-heading">{{ current_user.first_name }}</h2>
@@ -28,12 +29,12 @@
           {{ form.hidden_tag() }}
           {{form.csrf_token}}
           <fieldset class="form-group">
-              <legend class="border-bottom mb-4">Profile Information</legend>
-                <div class="form-group pname">
+              <!--<legend class="border-bottom mb-4">Profile Information</legend>-->
+                <!--<div class="form-group pname">
                     {{current_user.first_name}} {{current_user.last_name}}
-                </div>
-              <div class="form-group">
-                  {{ form.email.label(class="form-control-label") }}
+                </div>-->
+              <!--<div class="form-group">
+                  {{ form.email.label(class="form-control-label") }}-->
                   {% if form.email.errors %}
                       {{ form.email(class="form-control form-control-lg is-invalid") }}
                       <div class="invalid-feedback">
@@ -42,24 +43,26 @@
                           {% endfor %}
                       </div>
                   {% else %}
-                      {{ form.email(class="form-control form-control-lg") }}
+                     <!-- {{ form.email(class="form-control form-control-lg") }}-->
                   {% endif %}
               </div>
-              <div class="form-group">
+              <div class="form-group" align= 'center'>
                   {{ form.picture.label() }}
+                  <div class="form-control-file" style="padding-left: 450px">
                   {{ form.picture(class="form-control-file") }}
+                  </div>
                   {% if form.picture.errors %}
                       {% for error in form.picture.errors %}
-                          <span class="text-danger">{{ error }}</span></br>
+                          <span class="text-danger" align= 'center'>{{ error }}</span></br>
                       {% endfor %}
                   {% endif %}
               </div>
-              <div class = "form-group">
+              <div class = "form-group" align= 'center'>
                 <div>
                     <a href = "{{ url_for('views.saved_reviews') }}">Saved Reviews</a>
                   </div>
               </div>
-              <div class = "form-group">
+              <div class = "form-group" align= 'center'>
                 <div>
                     {% if current_user.is_authenticated and current_user.is_superuser %}
                     <a class ="text-secondary" href = "{{ url_for('views.managed_reviews') }}">Managed Reviews</a>
@@ -71,7 +74,7 @@
                   </div>
               </div>
           </fieldset>
-          <div class="form-group">
+          <div class="form-group" align= 'center'>
               {{ form.submit(class="btn btn-outline-info") }}
           </div>
       </form>
