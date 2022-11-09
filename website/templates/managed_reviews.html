@@ -2,15 +2,17 @@
 <link rel="stylesheet" type="text/css" href="../static/main.css">
 <div class="raredog">
 {% block content %}
-<div>
+<div style="padding-top: 50px;">
     <h2> Managed Reviews </h2>
 </div>
 {% for employee in Employees %}
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
+        <div style="font-weight: bold;text-align: center;">
        {{ employee.name }}
-        <ul class = 'reviews'>
+       </div>
+        <ul class = 'reviews' style="text-align: center;">
           {%if employee['reviews']%}
           {%for r in employee['reviews']%}
             <li>

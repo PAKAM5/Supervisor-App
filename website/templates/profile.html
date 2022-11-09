@@ -5,21 +5,23 @@
 
 {% block content %} <!--<h1>Profile Page</h1>-->
 <div class="content-section" style="padding-top: 50px;">
-    <div class="media">
-      <img class="rounded-circle account-img" src="{{ image_file }}">
+    <div class="card">
+      <img class="rounded-circle account-img" src="{{ image_file }}" style="margin-left:75px;">
       <div class="media-body">
-        <h2 class="account-heading">Hello {{ current_user.first_name }}</h2>
-        <p class="text-secondary">{{ current_user.email }}</p>
+        <h2 class="account-heading">{{ current_user.first_name }}</h2>
+        
         <!--<p class="text-secondary">{{ current_user.phone }}</p>-->
         {% if current_user.is_superuser == True %}
-        <p class="text-secondary">Expiry date:{{subscription.expiry_date}}</p>
-        <p class="text-secondary">Administrator</p>
+       
+        <p class="text-secondary" style="color: grey; font-size: 20px;">Administrator</p>
+        <p class="text-secondary" style="color:orangered; font-size: 20px;">Expiry date:{{subscription.expiry_date}}</p>
         <h2 class=> </h2>
         {% elif current_user.is_manager == True %}
         <p class="text-secondary">Manager</p>
         {% else %}
         <p class="text-secondary">Supervisor</p>
         {% endif %}
+        <p class="text-secondary" style="color: grey; font-size: 20px;">{{ current_user.email }}</p>
       </div>
     </div>
       <form method="POST" action="" enctype="multipart/form-data">
