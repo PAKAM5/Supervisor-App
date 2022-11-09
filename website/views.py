@@ -94,6 +94,8 @@ def profile():
     form = EditProfileForm()
     #Get subscription for when school is is the same as current user school id
     subscription = Subscription.query.with_entities(Subscription.expiry_date).filter(Subscription.school_id==current_user.school_id).first()
+    #Get school name from school table where school id is equal to current user school id
+    school = School.query.with_entities(School.school_name).filter(School.id==current_user.school_id).first()
     #convert Subscription.expiry_date value from the Subsciption table to date format
     if form.validate_on_submit():
         if form.picture.data:
@@ -111,7 +113,7 @@ def profile():
         form.username.data = current_user.name
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template("profile.html" ,image_file=image_file, form = form, subscription = subscription)
+    return render_template("profile.html" ,image_file=image_file, form = form, subscription = subscription, school = school)
 
 #define home page 
 @views.route("/")
