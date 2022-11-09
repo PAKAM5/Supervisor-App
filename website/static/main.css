@@ -34,10 +34,12 @@ img{
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
-}
+}*/
 
 .article-title {
   color: #444444;
+  height: 40px;
+  width: 40px;
 }
 
 a.article-title:hover {
@@ -47,12 +49,15 @@ a.article-title:hover {
 
 .article-content {
   white-space: pre-line;
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
 }
 
 .article-img {
   height: 65px;
   width: 65px;
-  margin-right: 16px;
+  margin-right: 16px; 
 }
 
 .article-metadata {
@@ -72,14 +77,14 @@ a.article-title:hover {
   vertical-align: middle;
 }
 
-.account-img {
+/* .account-img {
   height: 125px;
   width: 125px;
   margin-right: 20px;
   margin-bottom: 16px;
-}
+} */
 
-.account-heading {
+/**.account-heading {
   font-size: 2.5rem;
 }
 *{

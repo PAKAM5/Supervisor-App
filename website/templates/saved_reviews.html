@@ -7,15 +7,12 @@
 <div>
   <h2> My Reviews </h2>
 </div>
+<br>
 {% for r in rd %}
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
+          <img width="10" height="10"class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
           <div class="media-body">
-            <!--<div class="article-metadata">
-              <a class="mr-2" href="#"></a>
-              <small class="text-muted">{{ r.date_posted.strftime('%Y-%m-%d') }}</small>
-            </div>-->
-            <h2><a class="article-title" href="{{ url_for('views.user_appraisal_display') }}?date={{r.date_posted}}">Appraisal {{ r.date_posted.strftime('%Y-%m-%d') }}</a></h2>
+            <a class="article-title" href="{{ url_for('views.user_appraisal_display') }}?date={{r.date_posted}}">Appraisal {{ r.date_posted.strftime('%Y-%m-%d') }}</a>
             <p class="article-content"> <ul>
               <li>{{r.date_posted}}</li>
             </ul>
